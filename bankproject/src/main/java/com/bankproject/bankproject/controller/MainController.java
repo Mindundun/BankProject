@@ -8,6 +8,7 @@ public class MainController {
     
     @GetMapping("/")
     public String mainP(){
-        return "main";
+        return "index";
+        // 민경아 인덱스로 바꾸래서 바꿨다 기존:main
     }
 }
