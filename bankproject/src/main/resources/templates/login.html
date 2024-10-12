@@ -4,15 +4,36 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>login</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+	<link rel="stylesheet" th:href="@{/css/all.min.css}">
+	<link rel="stylesheet" th:href="@{/css/fonts.css}">
+	<link rel="stylesheet" th:href="@{/css/login.css}">
+    <script  th:src="@{/js/login.js}"></script>
 </head>
 <body>
-    login page
-    <hr>
-    <form action="/loginProc" method="post" name="loginForm">
-        <input id="username" type="text" name="username" placeholder="id"/>
-        <input id="password" type="password" name="password" placeholder="password"/>
-        <input type="submit" value="login"/>
-    </form>
+    <div id="login-main">
+        <div class="login-box">
+            <h1 class="logo"><a href="/"><img src="/img/logo_black.png" alt="패스뱅크"></a></h1>
+            <form action="/loginProc" method="post" name="loginForm" >
+                <div class="idPass">
+                    <input id="username" type="text" name="username" placeholder="아이디를 입력하세요." class="id"/>
+                    <input id="password" type="password" name="password" placeholder="패스워드를 입력하세요." class="pass"/>
+                </div>
+                <div class="loginbtn">
+                    <input type="submit" value="로그인" />
+                </div>
+            </form>
+            <div class="sns-login">
+                <span><a href="#">카카오</a></span>
+                <span><a href="#">네이버</a></span>
+            </div>
+            <div class="join">
+                <a href="#">회원가입</a>
+                <a href="#">아이디찾기</a>
+                <a href="#">비밀번호찾기</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
