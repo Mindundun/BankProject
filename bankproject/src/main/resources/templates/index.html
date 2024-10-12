@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>테스트</title>
-		<link rel="stylesheet" th:href="@{/css/reset.css}">
-		<link rel="stylesheet" th:href="@{/css/all.min.css}">
-		<link rel="stylesheet" th:href="@{/css/fonts.css}">
-    <link rel="stylesheet" th:href="@{/css/index.css}">
-    <script src="/js/index.js"></script>
+	<link rel="stylesheet" th:href="@{/css/reset.css}">
+	<link rel="stylesheet" th:href="@{/css/all.min.css}">
+	<link rel="stylesheet" th:href="@{/css/fonts.css}">
+	<link rel="stylesheet" th:href="@{/css/index.css}">
+    <script  th:src="@{/js/index.js}"></script>
 </head>
 <body>
 	<div id="wrap">
 		<header>
 			<div id="header-box">
-				<h1 class="logo"><a href="#"><img src="/img/logo_white.png" alt="패스뱅크"></a></h1>
+				<h1 class="logo"><a href="/"><img src="/img/logo_white.png" alt="패스뱅크"></a></h1>
 				<div class="nav">
 					<ul>
 						<li class="main-menu"><a href="#">MY</a>
@@ -60,10 +60,14 @@
 			</div>
 			<div class="news-box">
 				<h2>News</h2>
-				<ul class="card">
-					<li><a href="#"></a>
+				<ul class="card-con">
+					<li><a href="#">콘텐츠1</a>
 					<ul class="card-box">
-						<li>제목</li>
+						<li>썸네일${title}</li>
+						<li>제목${title}</li>
+						<li>내용${content}</li>
+						<li>파일${files}</li>
+						<li>날짜${date}</li>
 					</ul>
 					</li>
 					<li><a href="#">뉴스레터</a></li>
