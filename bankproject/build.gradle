@@ -54,6 +54,11 @@ dependencies {
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	//Lombok 왜 없다하냐,,
+	compileOnly 'org.projectlombok:lombok:1.18.30' // Lombok 의존성 추가
+    annotationProcessor 'org.projectlombok:lombok:1.18.30' // Lombok annotation processor 추가
+	testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {

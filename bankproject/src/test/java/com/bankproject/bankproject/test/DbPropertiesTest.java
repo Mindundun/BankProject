@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
 @org.springframework.boot.test.context.SpringBootTest
 @ConfigurationProperties
