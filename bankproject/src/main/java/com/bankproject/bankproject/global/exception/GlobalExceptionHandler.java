@@ -24,14 +24,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<String> handleNullPointerException(NullPointerException e) {
-        log.error("NullPointerException Log Line: {}", e.getStackTrace()[0].getLineNumber());
-        log.error("NullPointerException Message: {}", e.getMessage());
-        log.error("NullPointerException: ", e);
-        return new ResponseEntity<>("Null Pointer Exception", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     /**
      * MethodArgumentNotValidException handler (Validation)
      */
