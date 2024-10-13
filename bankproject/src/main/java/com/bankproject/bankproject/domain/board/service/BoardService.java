@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,8 @@ import com.bankproject.bankproject.domain.board.repository.BoardRepository;
 import com.bankproject.bankproject.domain.board.request.BoardInsertRequest;
 import com.bankproject.bankproject.domain.board.response.BoardResponse;
 import com.bankproject.bankproject.entity.UserEntity;
+import com.bankproject.bankproject.global.exception.ServiceSystemException;
+import com.bankproject.bankproject.global.util.file.CustomFileUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -44,86 +45,25 @@ public class BoardService {
 
     // 파일 업로드 로직
     public Map<String, Object> fileUpload(List<MultipartFile> files) {
-        Map<String, Object> result = new HashMap<>();
-        List<String> uploadedFiles = new ArrayList<>();
-        List<String> uploadFilePaths = new ArrayList<>();
-        String randomKey = "V" + System.currentTimeMillis();
+        try {
+            
+            Map<String, Object> result = new HashMap<>();
+            String randomKey = "V" + System.currentTimeMillis();
+            
+            Path tempDir = Paths.get(fileTempDirPath, randomKey);
+            List<String> uploadFilePaths = CustomFileUtil.saveFilesWithDefaultPath(files, tempDir);
 
-        // 임시 폴더 생성
-        Path tempDir = Paths.get(fileTempDirPath, randomKey);
-        if (!Files.exists(tempDir)) {
-            try {
-                Files.createDirectories(tempDir);  // 디렉토리 생성
-            } catch (IOException e) {
-                log.error("임시 디렉토리 생성 실패: {}", e.getMessage());
-                throw new RuntimeException("임시 디렉토리 생성에 실패했습니다.");
-            }
+            result.put("randomKey", randomKey);
+            result.put("uploadedFilePaths", uploadFilePaths);
+            return result;
+
+        } catch (IOException e) {
+            log.error("파일 업로드 중 IOException 발생: {}", e.getMessage());
+            throw new ServiceSystemException("파일 업로드 중 오류가 발생했습니다.", e);
+        } catch (Exception e) {
+            log.error("파일 업로드 중 일반 오류 발생: {}", e.getMessage());
+            throw new ServiceSystemException("파일 업로드 중 오류가 발생했습니다.", e);
         }
-
-        // 파일 업로드 처리
-        for (MultipartFile file : files) {
-            if (file.isEmpty()) {
-                log.warn("빈 파일이 전달됨: {}", file.getOriginalFilename());
-                continue;
-            }
-
-            // 파일 확장자 검증 (ex: .jpg, .png, .pdf 등만 허용)
-            String originalFilename = file.getOriginalFilename();
-            if (!isValidExtension(originalFilename)) {
-                log.warn("허용되지 않는 파일 형식: {}", originalFilename);
-                continue;
-            }
-
-            // 파일 저장 경로
-            String newFileName = getUniqueFileName(originalFilename, uploadedFiles);
-            Path tempFilePath = tempDir.resolve(newFileName);
-
-            try {
-                // 임시 폴더에 파일 저장
-                Files.copy(file.getInputStream(), tempFilePath, StandardCopyOption.REPLACE_EXISTING);
-                uploadedFiles.add(newFileName);  // 저장된 파일 이름을 리스트에 추가
-                uploadFilePaths.add(tempFilePath.toString().replace("\\", "/"));  // 파일 경로를 리스트에 추가
-            } catch (IOException e) {
-                log.error("파일 업로드 실패: {}", originalFilename);
-                throw new RuntimeException("파일 업로드에 실패했습니다.");
-            }
-        }
-
-        result.put("randomKey", randomKey);
-        result.put("uploadedFilePaths", uploadFilePaths);
-        return result;
-    }
-
-    // 파일 확장자 검증
-    private boolean isValidExtension(String fileName) {
-        List<String> validExtensions = Arrays.asList(
-            ".jpg", ".jpeg", ".png",
-            ".pdf", ".txt", ".ppt", ".pptx",
-            ".doc", ".docx", ".xls", ".xlsx"
-        );
-        
-        if (fileName != null) {
-            String lowerCaseFileName = fileName.toLowerCase();
-            return validExtensions.stream().anyMatch(lowerCaseFileName::endsWith);
-        }
-    
-        return false;
-    }
-
-    // 중복 파일명을 처리하는 메서드
-    private String getUniqueFileName(String originalFilename, List<String> uploadedFiles) {
-        String newFileName = originalFilename;
-        int count = 1;
-
-        // uploadedFiles에 파일이 이미 존재하는지 확인
-        while (uploadedFiles.contains(newFileName)) {
-            String fileNameWithoutExt = originalFilename.substring(0, originalFilename.lastIndexOf('.'));
-            String extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
-            newFileName = fileNameWithoutExt + "_" + count + extension;
-            count++;
-        }
-
-        return newFileName;
     }
 
     @Transactional
