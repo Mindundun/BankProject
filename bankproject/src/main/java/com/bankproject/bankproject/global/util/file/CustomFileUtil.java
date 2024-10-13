@@ -34,8 +34,11 @@ public class CustomFileUtil {
 
             for(MultipartFile file : files) {
                 String fileName = getUniqueFileName(file.getOriginalFilename(), existingFiles);
+                log.debug("fileName: {}", fileName);
                 Path targetPath = targetDir.resolve(fileName);
+                log.debug("targetPath: {}", targetPath);
                 String storedFilePath = saveFile(file, targetPath);
+                log.debug("storedFilePath: {}", storedFilePath);
                 storedFilePaths.add(storedFilePath);
             }
 
@@ -93,7 +96,7 @@ public class CustomFileUtil {
     public static String saveFile(MultipartFile file, Path targetPath) throws IOException {
         try {
             Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-            return targetPath.toString().replaceAll("\\", "/");
+            return targetPath.toString().replace("\\", "/");
         } catch (IOException e) {
             log.error("파일 저장 중 오류 발생: {}", file.getOriginalFilename(), e);
             throw e;
