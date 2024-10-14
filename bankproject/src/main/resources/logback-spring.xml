@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true">
+    
+    <!-- 변수 지정 -->
+    <property name="LOG_DIR" value="/DATA/logs" />
+    <property name="MAIN_FILE_NAME" value="bankproject" />
+
+    <!-- [ Appender ] FILE -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${MAIN_FILE_NAME}.log</file>
+        <!-- 일자별로 로그파일 적용하기 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${MAIN_FILE_NAME}_%d{yyyyMMdd}.log</fileNamePattern>
+            <!-- 로그파일 저장 기간 설정 - 로그파일은 일반적으로 하루에 한개의 파일을 생성한다.-->
+            <maxHistory>1</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- [ Appender ] Console -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Default package logger -->
+    <logger name="com.bankproject.bankproject" level="DEBUG" appender-ref="FILE"/>
+
+    <!-- [ logger ] ROOT -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <!-- <appender-ref ref="FILE" /> -->
+    </root>
+    
+    
+</configuration>

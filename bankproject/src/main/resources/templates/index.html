@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASSBANK I 메인화면::안정된 금융생활</title>
+	<!-- css -->
+	<link rel="icon" th:href="@{/img/favicon-01.png}">
+	<link rel="stylesheet" th:href="@{/css/reset.css}">
+	<link rel="stylesheet" th:href="@{/css/all.min.css}">
+	<link rel="stylesheet" th:href="@{/css/fonts.css}">
+	<link rel="stylesheet" th:href="@{/css/index.css}">
+	<!-- js -->
+    <script src="/js/index.js"></script>
+</head>
+<body>
+	<div id="wrap">
+		<header>
+			<div id="header-box">
+				<h1 class="logo"><a href="/"><img src="/img/logo_white.png" alt="패스뱅크"></a></h1>
+				<div class="nav">
+					<ul>
+						<li class="main-menu"><a href="#">MY</a>
+							<ul class="sub-nav">
+								<li class="sub-menu"><a href="#">마이계좌조회</a></li>
+								<li class="sub-menu"><a href="#">개인정보변경</a></li>
+							</ul>
+						</li>
+						<li class="main-menu"><a href="#">상품</a>
+							<ul class="sub-nav">
+								<li class="sub-menu"><a href="#">통장</a></li>
+								<li class="sub-menu"><a href="#">카드</a></li>
+							</ul>
+						</li>
+						<li class="main-menu"><a href="#">이체</a>
+							<ul class="sub-nav">
+								<li class="sub-menu"><a href="#">계좌이체</a></li>
+								<li class="sub-menu"><a href="#">증권이체</a></li>
+							</ul>
+						</li>
+						<li class="main-menu"><a href="#">상품</a>
+							<ul class="sub-nav">
+								<li class="sub-menu"><a href="#">증권 구매</a></li>
+								<li class="sub-menu"><a href="#">증권 판매</a></li>
+							</ul>
+						</li>
+					</ul>
+					<div id="box-bg">
+					</div>
+				</div>
+				<div class="top-nav">
+					<span class="top-btn"><a href="/admin">관리자</a></span>
+					<span class="top-btn"><a href="/login">로그인</a></span>
+				</div>
+			</div>
+		</header>
+		<div class="banner"></div>
+		<main class="main">
+			<div class="main-text">
+				<h2>처음하는 금융 생활,<br>바로 여기서 시작해보세요.</h2>
+				<a href="#" class="banner-btn btn">자세히 보기</a>
+			</div>
+			<div class="news-box">
+				<h2>금융 소식</h2>
+				<ul class="card-con">
+					<!-- <li>
+						<ul class="card-box">
+							<li class="card-img">이미지${card-img}</li>
+							<li class="card-detail">
+								<span class="title">제목${title}</span>
+								<span class="content">내용${content}</span>
+								<span class="files">url${files}</span>
+								<span class="date">날짜${date}</span>
+							</li>
+						</ul>
+					</li> -->
+				</ul>
+			</div>
+		</main>
+	</div>
+</body>
+</html>
