@@ -9,18 +9,44 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bankproject.bankproject.domain.board.dto.FileDTO;
+
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class CustomFileUtil {
 
     private static final List<String> SUPPORTED_EXTENSIONS = Arrays.asList(".jpg", ".jpeg", ".png", ".pdf", ".txt", ".ppt", ".pptx", ".doc", ".docx", ".xls", ".xlsx");
-    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String MAX_FILE_SIZE_STR;
 
-    public static List<String> saveFilesWithDefaultPath(List<MultipartFile> files, Path targetDir) throws IOException {
+    @Value("${spring.servlet.multipart.max-request-size}")
+    private String MAX_REQUEST_SIZE_STR;
+
+    private static long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    private static long MAX_REQUEST_SIZE = 10 * 1024 * 1024; // 10MB
+
+    @PostConstruct
+    public void init() {
+        log.debug("MAX_FILE_SIZE: {}", MAX_FILE_SIZE_STR);
+        log.debug("MAX_REQUEST_SIZE: {}", MAX_REQUEST_SIZE_STR);
+        MAX_FILE_SIZE = Long.parseLong(MAX_FILE_SIZE_STR.replace("MB", "")) * 1024 * 1024;
+        MAX_REQUEST_SIZE = Long.parseLong(MAX_REQUEST_SIZE_STR.replace("MB", "")) * 1024 * 1024;
+        log.debug("MAX_FILE_SIZE: {}", MAX_FILE_SIZE);
+        log.debug("MAX_REQUEST_SIZE: {}", MAX_REQUEST_SIZE);
+    }
+
+    // 파일 저장
+    public static Map<String, List<String>> saveFilesWithDefaultPath(List<MultipartFile> files, Path targetDir) throws IOException {
         try {
             // 1. 폴더 생성
             createDirectoryIfNotExists(targetDir);
@@ -30,23 +56,30 @@ public class CustomFileUtil {
 
             // 3. 파일 저장
             List<String> storedFilePaths = new ArrayList<>();
+            List<String> fileNames = new ArrayList<>();
             List<String> existingFiles = Arrays.asList(targetDir.toFile().list());
 
             for(MultipartFile file : files) {
                 String fileName = getUniqueFileName(file.getOriginalFilename(), existingFiles);
                 log.debug("fileName: {}", fileName);
+
                 Path targetPath = targetDir.resolve(fileName);
                 log.debug("targetPath: {}", targetPath);
+
                 String storedFilePath = saveFile(file, targetPath);
                 log.debug("storedFilePath: {}", storedFilePath);
+
                 storedFilePaths.add(storedFilePath);
+                fileNames.add(fileName);
             }
 
-            // 4. 저장된 파일 경로 반환
-            return storedFilePaths;
+            // 리턴
+            Map<String, List<String>> result = Map.of("fileNames", fileNames, "storedFilePaths", storedFilePaths);
+            return result;
             
         } catch (IOException e) {
-            log.error("파일 저장 중 오류 발생: {}", e);
+            log.error("=== ERROR LINE : {}", e.getStackTrace()[0].getLineNumber());
+            log.error("==== ERROR ====", e);
             throw e;
         }
     }
@@ -56,7 +89,7 @@ public class CustomFileUtil {
         try {
             if (Files.notExists(directory)) {
                 Files.createDirectories(directory);
-                log.info("폴더가 생성되었습니다: {}", directory.toAbsolutePath());
+                log.debug("폴더가 생성되었습니다: {}", directory.toAbsolutePath());
             }
         } catch (IOException e) {
             log.error("폴더 생성 중 오류 발생: {}", directory.toAbsolutePath(), e);
@@ -69,7 +102,18 @@ public class CustomFileUtil {
         if (files == null || files.isEmpty()) {
             throw new FileValidationException("파일이 전달되지 않았습니다.");
         }
+
+        // 파일 유효성 검사
         files.forEach(CustomFileUtil::validateFile);
+
+        // 요청 크기 검사
+        long totalFileSize = files.stream()
+                .map(MultipartFile::getSize)
+                .reduce(0L, Long::sum);
+
+        if (totalFileSize > MAX_REQUEST_SIZE) {
+            throw new FileValidationException("요청 크기가 10MB를 초과했습니다.");
+        }
     }
 
     public static void validateFile(MultipartFile file) {
@@ -104,8 +148,9 @@ public class CustomFileUtil {
     }
 
     // 파일 이동
-    public static void moveFilesInDirectory(Path sourceDir, Path targetDir) throws IOException {
+    public static List<FileDTO> moveFilesInDirectory(Path sourceDir, Path targetDir) throws IOException {
         Map<Path, Path> movedFiles = new HashMap<>();  // 원본 경로 -> 타겟 경로 저장
+        List<FileDTO> fileDTOList = new ArrayList<>();
         log.info("파일 이동 시작: {} -> {}", sourceDir, targetDir);
         try {
             // 1. 타겟 폴더 생성
@@ -113,11 +158,22 @@ public class CustomFileUtil {
 
             // 2. sourceDir 안에 있는 모든 파일을 targetDir로 이동
             List<Path> paths = Files.list(sourceDir).toList();
+            List<String> existingFiles = Arrays.asList(targetDir.toFile().list());
             for(Path sourcePath : paths) {
-                Path targetPath = targetDir.resolve(sourcePath.getFileName());
+                String saveFileName = getUniqueFileName(sourcePath.getFileName().toString(), existingFiles);
+                Path targetPath = targetDir.resolve(saveFileName);
                 Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-                log.info("파일 이동 성공: {} -> {}", sourcePath, targetPath);
+                log.debug("파일 이동 성공: {} -> {}", sourcePath, targetPath);
                 movedFiles.put(sourcePath, targetPath);
+
+                // FileDTO 생성
+                FileDTO fileDTO = FileDTO.builder()
+                        .fileId(UUID.randomUUID().toString())
+                        .fileName(sourcePath.getFileName().toString())
+                        .filePath(targetPath.toString().replace("\\", "/"))
+                        .build();
+
+                fileDTOList.add(fileDTO);
             }
 
             // 3. sourceDir 삭제
@@ -135,9 +191,10 @@ public class CustomFileUtil {
                     log.error("파일 원복 중 오류 발생: {} -> {}", targetPath, sourcePath, e1);
                 }
             });
-            log.error("파일 이동 중 오류 발생: {} -> {}", sourceDir, targetDir, e);
             throw e;
         }
+
+        return fileDTOList;
     }
 
     // 파일 삭제
@@ -151,19 +208,27 @@ public class CustomFileUtil {
     }
 
     public static String getUniqueFileName(String originalFilename, List<String> existingFiles) {
-        String baseName = originalFilename;
-        String extension = getFileExtension(originalFilename);
-        int count = 1;
-
-        while (existingFiles.contains(originalFilename)) {
-            originalFilename = baseName + "_" + count + extension;
-            count++;
+        int lastIndex = originalFilename.lastIndexOf('.');
+        String baseName;
+        String extension;
+        String newFileName = originalFilename;
+        if (lastIndex == -1) {
+            baseName = originalFilename;
+            extension = "";
+        } else {
+            baseName = originalFilename.substring(0, lastIndex);
+            extension = originalFilename.substring(lastIndex);
         }
 
-        return originalFilename;
+        int count = 1;
+        while (existingFiles.contains(newFileName)) {
+            newFileName = baseName + "(" + count++ + ")" + extension;
+        }
+
+        return newFileName;
     }
 
-    private static String getFileExtension(String fileName) {
+    public static String getFileExtension(String fileName) {
         int lastIndex = fileName.lastIndexOf('.');
         if (lastIndex == -1) {
             return "";
