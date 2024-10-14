@@ -18,7 +18,7 @@ body {color: #333; font-family: 'Noto Sans KR', sans-serif, 'Gmarket Sans'; box-
 
 /* SNS 로그인 버튼 */
 .sns {display: flex; gap: 20px; position: relative;}
-.sns > span {width: 50px; opacity: 0.5;}
+.sns > span {width: 50px; opacity: 1;}
 
 /* 회원가입 및 아이디비밀번호 찾기 */
 /* .newUser {margin-top: 20px; color: #ccc; font-size: 14px;} */
