@@ -51,4 +51,4 @@ header:hover .sub-menu {opacity: 1; transition: all 0.3s ;}
 
 .join-btn {display: flex; justify-content: center; align-items: center; margin: 50px 0; gap: 25px;}
 .join-chk {width: 100px; padding: 15px 20px; background: #26a7e2;  border-radius: 50px; border: none; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer;}
-.join-chk.back {background: #ccc;}
+.join-chk.back {background: #eee;}
