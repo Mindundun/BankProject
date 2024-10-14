@@ -1,0 +1,56 @@
+
+/* 공통 */
+body {color: #333; font-family: 'Noto Sans KR', sans-serif, 'Gmarket Sans'; box-sizing: border-box; scroll-behavior: smooth; overflow-x: hidden;  width: 100%; height: auto; background: #fff;}
+#wrap { width: 100%; height: 100%; }
+main {max-width: 1200px; height: 100vh; margin: 0px auto; padding-top: 150px;}
+
+
+/* 헤더 메뉴 */
+header {width: 100%; height: 80px; padding: 20px; color: #fff; background: rgba(0,0,0,0.7); position: fixed; z-index: 999; transition: all 0.5s;  backdrop-filter: blur(5px); }
+#header-box {max-width: 1200px; height: 100%; margin: 0 auto;  display: flex; justify-content: space-between;  }
+#header-box > h1 {width: 200px;}
+#header-box > h1 > a {display: inline-block; vertical-align: middle;}
+#box-bg {opacity: 0;transition: 0.3s;display: flex;}
+.nav {width: 100%; text-align: center;}
+.nav > ul {display: flex; justify-content: space-around;}
+.nav  .sub-nav {position: absolute; top: 50px; width: 100%; }
+.sub-nav > .sub-menu {padding: 10px 0; opacity: 0; transition: all 0.3s; font-size: 16px; }
+.main-menu {width: 150px; position: relative; font-size: 18px; font-weight: 500;}
+.main-menu > a, .sub-menu > a {display: inline-block; width: 100%; vertical-align: middle;}
+header:hover{height: 250px; background: rgba(0, 0, 0, 0.7); }
+header:hover .sub-menu {opacity: 1; transition: all 0.3s ;}
+.sub-menu:hover {color: #26a7e2;}
+
+/* 관리자 및 로그인 */
+.top-nav {height: 30px;  display: flex;  gap: 10px; align-items: top; font-size: 14px; text-align: center;}
+.top-btn {width: 100px; display: flex; align-items: center; justify-content: center; background: #26a7e2;  border-radius: 20px; border: none; }
+
+
+/* 회원가입 텍스트 */
+.top-join {display: flex; justify-content: space-between;}
+.top-join > h2 {margin-bottom: 25px; font-size: 28px; font-weight: 700;}
+
+/* 회원가입 약관 */
+.term-detail {width: 100%; height: 250px; border: 2px solid #ccc; overflow: scroll; overflow-x: hidden; color: #333; font-size: 14px;}
+.term-box {margin-bottom: 25px;}
+.term-box > h3 {font-weight: 500; margin-bottom: 25px;}
+
+/* 체크표시 */
+.check > span {display: inline-block; font-weight: 500; margin-left: 10px; margin-bottom: 25px; color: #100e1d;}
+
+/* 계좌번호, 아이디, 패스워드 */
+.join-text {margin-left: 20px; margin-top: 25px; font-size: 14px;}
+.join-text > ol > li {line-height: 1.5;}
+.joinForm > table {width: 100%; margin-top: 25px; border-top: 2px solid #333; border-bottom: 2px solid #333;}
+.joinForm > table th {border-right: 1px solid #333; background: #eee; font-weight: 300; font-size: 14px;}
+.joinForm > table tr {border-bottom: 1px solid #555; }
+.joinForm > table tr:nth-child(6) {border-bottom: none;}
+.joinForm > table td {display: flex; align-items: center; padding: 10px;}
+.joinForm > table input {display: inline-block; background: #b3c8e2; width: 300px;  outline: none; border: 2px solid #ccc; padding: 5px;}
+.joinForm > table span {font-size: 12px; color: #555; padding-left: 10px;}
+
+
+.num-btn {border: none; border-radius: 10px; padding: 5px 10px; margin-left: 10px; background: #333; color: #fff;}
+.join-btn {display: flex; justify-content: center; align-items: center; margin: 50px 0; gap: 25px;}
+.join-chk {width: 100px; padding: 15px 20px; background: #26a7e2;  border-radius: 50px; border: none; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer;}
+.join-chk.back {background: #333;}
