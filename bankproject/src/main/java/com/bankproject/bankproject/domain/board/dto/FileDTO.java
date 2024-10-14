@@ -1,7 +1,5 @@
 package com.bankproject.bankproject.domain.board.dto;
 
-import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,12 +16,6 @@ public class FileDTO {
     private String fileId; // 파일 ID
 
     private String fileName; // 파일 이름
-    private String fileUrl; // 파일 URL
-
-    public FileDTO(String fileName, String fileUrl) {
-        this.fileId = UUID.randomUUID().toString();
-        this.fileName = fileName;
-        this.fileUrl = fileUrl;
-    }
+    private String filePath; // 파일 URL
 
 }

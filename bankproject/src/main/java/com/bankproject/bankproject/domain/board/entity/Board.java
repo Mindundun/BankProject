@@ -1,6 +1,7 @@
 package com.bankproject.bankproject.domain.board.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -98,7 +99,7 @@ public class Board {
         this.isDeleted = true;
     }
 
-    public void setFiles(List<FileDTO> fileDTOList) {
+    public void setFileList(List<FileDTO> fileDTOList) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             this.files = objectMapper.writeValueAsString(fileDTOList);
@@ -107,7 +108,10 @@ public class Board {
         }
     }
 
-    public List<FileDTO> getFiles() {
+    public List<FileDTO> getFileList() {
+        if(this.files == null) {
+            return new ArrayList<>();
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(this.files, objectMapper.getTypeFactory().constructCollectionType(List.class, FileDTO.class));
