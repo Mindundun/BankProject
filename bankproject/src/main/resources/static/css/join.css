@@ -49,6 +49,8 @@ header:hover .sub-menu {opacity: 1; transition: all 0.3s ;}
 .joinForm > table input {display: inline-block; background: #b3c8e2; width: 300px;  outline: none; border: 2px solid #ccc; padding: 5px;}
 .joinForm > table span {font-size: 12px; color: #555; padding-left: 10px;}
 
+
+.num-btn {border: none; border-radius: 10px; padding: 5px 10px; margin-left: 10px; background: #333; color: #fff;}
 .join-btn {display: flex; justify-content: center; align-items: center; margin: 50px 0; gap: 25px;}
 .join-chk {width: 100px; padding: 15px 20px; background: #26a7e2;  border-radius: 50px; border: none; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer;}
-.join-chk.back {background: #eee;}
+.join-chk.back {background: #333;}
