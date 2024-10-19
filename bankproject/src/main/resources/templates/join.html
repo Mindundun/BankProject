@@ -2,57 +2,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PASSBANK I 회원가입</title>
+    <title>PASSBANK :: 회원가입</title>
     <!-- css -->
    <link rel="icon" th:href="@{/img/favicon-01.png}">
-   <link rel="stylesheet" th:href="@{/css/reset.css}">
-   <link rel="stylesheet" th:href="@{/css/all.min.css}">
-   <link rel="stylesheet" th:href="@{/css/fonts.css}">
+   <link rel="stylesheet" th:href="@{/css/common/reset.css}">
+   <link rel="stylesheet" th:href="@{/css/common/all.min.css}">
+   <link rel="stylesheet" th:href="@{/css/common/fonts.css}">
+   <link rel="stylesheet" th:href="@{/css/header.css}">
    <link rel="stylesheet" th:href="@{/css/join.css}">
    <!-- js -->
     <script src="/js/join.js"></script>
 </head>
 <body>
     <div id="wrap">
-        <header>
-         <div id="header-box">
-            <h1 class="logo"><a href="/"><img src="/img/logo_white.png" alt="패스뱅크"></a></h1>
-            <div class="nav">
-               <ul>
-                  <li class="main-menu"><a href="#">MY</a>
-                     <ul class="sub-nav">
-                        <li class="sub-menu"><a href="#">마이계좌조회</a></li>
-                        <li class="sub-menu"><a href="#">개인정보변경</a></li>
-                     </ul>
-                  </li>
-                  <li class="main-menu"><a href="#">상품</a>
-                     <ul class="sub-nav">
-                        <li class="sub-menu"><a href="#">통장</a></li>
-                        <li class="sub-menu"><a href="#">카드</a></li>
-                     </ul>
-                  </li>
-                  <li class="main-menu"><a href="#">이체</a>
-                     <ul class="sub-nav">
-                        <li class="sub-menu"><a href="#">계좌이체</a></li>
-                        <li class="sub-menu"><a href="#">증권이체</a></li>
-                     </ul>
-                  </li>
-                  <li class="main-menu"><a href="#">상품</a>
-                     <ul class="sub-nav">
-                        <li class="sub-menu"><a href="#">증권 구매</a></li>
-                        <li class="sub-menu"><a href="#">증권 판매</a></li>
-                     </ul>
-                  </li>
-               </ul>
-               <div id="box-bg">
-               </div>
+        <header class="black">
+            <div id="header-box">
+                <h1 class="logo"><a href="/"><img src="/img/logo_white.png" alt="패스뱅크"></a></h1>
+                <div class="nav">
+                    <ul>
+                        <li class="main-menu"><a href="#">MY</a>
+                            <ul class="sub-nav">
+                            <li class="sub-menu"><a href="#">마이계좌조회</a></li>
+                            <li class="sub-menu"><a href="#">개인정보변경</a></li>
+                            </ul>
+                        </li>
+                        <li class="main-menu"><a href="#">상품</a>
+                            <ul class="sub-nav">
+                            <li class="sub-menu"><a href="#">통장</a></li>
+                            <li class="sub-menu"><a href="#">카드</a></li>
+                            </ul>
+                        </li>
+                        <li class="main-menu"><a href="#">이체</a>
+                            <ul class="sub-nav">
+                            <li class="sub-menu"><a href="#">계좌이체</a></li>
+                            <li class="sub-menu"><a href="#">증권이체</a></li>
+                            </ul>
+                        </li>
+                        <li class="main-menu"><a href="#">증권</a>
+                            <ul class="sub-nav">
+                            <li class="sub-menu"><a href="#">증권 구매</a></li>
+                            <li class="sub-menu"><a href="#">증권 판매</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div id="box-bg">
+                    </div>
+                </div>
+                <div class="top-nav">
+                    <span class="top-btn"><a href="/admin">관리자</a></span>
+                    <span class="top-btn"><a href="/login">로그인</a></span>
+                </div>
             </div>
-            <div class="top-nav">
-               <span class="top-btn"><a href="/admin">관리자</a></span>
-               <span class="top-btn"><a href="/login">로그인</a></span>
-            </div>
-         </div>
-      </header>
+        </header>
         <main class="main">
          <div class="main-text">
                 <div class="top-join">
@@ -676,10 +677,10 @@
                             <th>패스워드</th>
                             <td><input type="password" name="password" placeholder="Password"/><span>영문/소문자/대문자/숫자를 포함하여 8자 이상 입력하세요.</span></td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <th>계좌번호</th>
                             <td><input type="text" name="password" placeholder=""/><button class="num-btn">생성하기</button><span>버튼을 누르면 자동으로 번호가 생성됩니다.</span></td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <th>계좌비밀번호</th>
                             <td><input type="password" name="password" placeholder="0000"/><span>4자리 ~ 6자리 숫자</span></td>
@@ -691,7 +692,7 @@
                         </div>
                 </form>
             </div>
-      </main>
+        </main>
     </div>
 </body>
 </html>

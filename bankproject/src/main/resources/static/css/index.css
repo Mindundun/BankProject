@@ -8,25 +8,6 @@ body {color: #333; font-family: 'Noto Sans KR', sans-serif, 'Gmarket Sans'; box-
 main {max-width: 1200px; height: 100vh; margin: 0 auto;}
 
 
-/* 헤더 메뉴 */
-header {width: 100%; height: 80px; padding: 20px; color: #fff; background: rgba(255,255,255,0.1); position: fixed; z-index: 999; transition: all 0.5s;  backdrop-filter: blur(5px); }
-#header-box {max-width: 1200px; height: 100%; margin: 0 auto;  display: flex; justify-content: space-between;  }
-#header-box > h1 {width: 200px;}
-#header-box > h1 > a {display: inline-block; vertical-align: middle;}
-#box-bg {opacity: 0;transition: 0.3s;display: flex;}
-.nav {width: 100%; text-align: center;}
-.nav > ul {display: flex; justify-content: space-around;}
-.nav  .sub-nav {position: absolute; top: 50px; width: 100%; }
-.sub-nav > .sub-menu {padding: 10px 0; opacity: 0; transition: all 0.3s; font-size: 16px; }
-.main-menu {width: 150px; position: relative; font-size: 18px; font-weight: 500;}
-.main-menu > a, .sub-menu > a {display: inline-block; width: 100%; vertical-align: middle;}
-header:hover{height: 250px; background: rgba(0, 0, 0, 0.3);}
-header:hover .sub-menu {opacity: 1; transition: all 0.3s;}
-.sub-menu:hover {color: #26a7e2;}
-
-/* 관리자 및 로그인 */
-.top-nav {height: 30px;  display: flex;  gap: 10px; align-items: top; font-size: 14px; text-align: center;}
-.top-btn {width: 100px; display: flex; align-items: center; justify-content: center; background: #26a7e2;  border-radius: 50px; }
 
 /* 메인배너 */
 .banner {position: relative; width: 100%; height: 800px;background: linear-gradient(

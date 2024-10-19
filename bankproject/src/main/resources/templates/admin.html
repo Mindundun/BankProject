@@ -1,12 +1,75 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Main Page</title>
+    <title>PASSBANK :: 관리자페이지</title>
+    <!-- css -->
+	<link rel="icon" th:href="@{/img/favicon-01.png}">
+    <link rel="stylesheet" th:href="@{/css/common/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/fonts.css}">
+	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+	<!-- js -->
+    <script src="/js/admin.js"></script>
 </head>
 <body>
-admin page
+<div id="admin-wrap">
+    <header class="admin-header">
+        <div id="header-box">
+            <h1 class="logo"><a href="/"><img src="/img/logo_white.png" alt="패스뱅크"></a></h1>
+            <div class="nav">
+                <ul>
+                    <!-- <li class="main-menu"><a href="#">메인화면</a></li> -->
+                    <!-- <li class="main-menu"><a href="#">고객관리</a></li> -->
+                </ul>
+            </div>
+            <div class="top-nav">
+                <span class="top-btn"><a href="#">설정</a></span>
+                <span class="top-btn"><a href="/logout">로그아웃</a></span>
+            </div>
+        </div>
+    </header>
+    <div class="inner">
+        <div class="con">
+            <aside>
+                <div class="admin-user">
+                    <img src="/img/person.png" alt="유저">
+                    <p class="name">${admin}님 환영합니다.</p>
+                    <p class="group">관리자 ㅣ 입사일 : 2024. 10. 19</p>
+                </div>
+                <ul class="aside-nav">
+                    <li class="aside-menu"><a href="#"><span class="material-symbols-outlined" >favorite</span>계좌·상품관리</a></li>
+                    <li class="aside-menu"><a href="#"><span class="material-symbols-outlined">person_search</span>고객관리</a></li>
+                    <li class="aside-menu"><a href="#"><span class="material-symbols-outlined">monitoring</span>증권관리</a></li>
+                    <li class="aside-menu"><a href="#"><span class="material-symbols-outlined">atr</span>부서별계정</a></li>
+                </ul>
+            </aside>
+            <div class="admin-detail">
+                <h2>예금 상품</h2>
+                <div class="admin-main 1">
+                    <table>
+                        <tr>
+                            <th>상품명</th>
+                            <th>금리</th>
+                            <th>구분</th>
+                        </tr>
+                        <tr>
+                            <td>원데이 적금</td>
+                            <td>3.25%</td>
+                            <td>과세</td>
+                            <td>개인</td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- <div class="admin-main 2">
+                    <h2>예금 sdfsdf</h2>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

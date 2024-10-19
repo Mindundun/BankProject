@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PASSBANK I 메인화면::안정된 금융생활</title>
+    <title>PASSBANK :: 안정된 금융생활</title>
 	<!-- css -->
 	<link rel="icon" th:href="@{/img/favicon-01.png}">
-	<link rel="stylesheet" th:href="@{/css/reset.css}">
-	<link rel="stylesheet" th:href="@{/css/all.min.css}">
-	<link rel="stylesheet" th:href="@{/css/fonts.css}">
+	<link rel="stylesheet" th:href="@{/css/common/reset.css}">
+	<link rel="stylesheet" th:href="@{/css/common/all.min.css}">
+	<link rel="stylesheet" th:href="@{/css/common/fonts.css}">
+	<link rel="stylesheet" th:href="@{/css/header.css}">
 	<link rel="stylesheet" th:href="@{/css/index.css}">
 	<!-- js -->
+    <script src="/js/header.js"></script>
     <script src="/js/index.js"></script>
 </head>
 <body>
@@ -22,7 +24,7 @@
 					<ul>
 						<li class="main-menu"><a href="#">MY</a>
 							<ul class="sub-nav">
-								<li class="sub-menu"><a href="#">마이계좌조회</a></li>
+								<li class="sub-menu"><a href="/account">마이계좌조회</a></li>
 								<li class="sub-menu"><a href="#">개인정보변경</a></li>
 							</ul>
 						</li>
@@ -38,7 +40,7 @@
 								<li class="sub-menu"><a href="#">증권이체</a></li>
 							</ul>
 						</li>
-						<li class="main-menu"><a href="#">상품</a>
+						<li class="main-menu"><a href="#">증권</a>
 							<ul class="sub-nav">
 								<li class="sub-menu"><a href="#">증권 구매</a></li>
 								<li class="sub-menu"><a href="#">증권 판매</a></li>
