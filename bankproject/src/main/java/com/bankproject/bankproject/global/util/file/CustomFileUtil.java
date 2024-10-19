@@ -3,14 +3,18 @@ package com.bankproject.bankproject.global.util.file;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import com.bankproject.bankproject.global.dto.FileDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +23,25 @@ public class CustomFileUtil {
 
     private static final List<String> SUPPORTED_EXTENSIONS = Arrays.asList(".jpg", ".jpeg", ".png", ".pdf", ".txt", ".ppt", ".pptx", ".doc", ".docx", ".xls", ".xlsx");
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+    public static Map<String, Object> fileUpload(List<MultipartFile> files, String targetDir, String prefix) {
+        try {
+
+            Map<String, Object> result = new HashMap<>();
+            String randomKey = prefix + System.currentTimeMillis();
+
+            Path tempDir = Paths.get(targetDir, randomKey);
+            List<String> uploadFilePaths = CustomFileUtil.saveFilesWithDefaultPath(files, tempDir);
+
+            result.put("randomKey", randomKey);
+            result.put("uploadedFilePaths", uploadFilePaths);
+            return result;
+
+        } catch (Exception e) {
+            log.error("파일 업로드 중 일반 오류 발생: {}", e.getMessage());
+            throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.", e);
+        }
+    }
 
     public static List<String> saveFilesWithDefaultPath(List<MultipartFile> files, Path targetDir) throws IOException {
         try {
@@ -44,7 +67,7 @@ public class CustomFileUtil {
 
             // 4. 저장된 파일 경로 반환
             return storedFilePaths;
-            
+
         } catch (IOException e) {
             log.error("파일 저장 중 오류 발생: {}", e);
             throw e;
@@ -104,29 +127,50 @@ public class CustomFileUtil {
     }
 
     // 파일 이동
-    public static void moveFilesInDirectory(Path sourceDir, Path targetDir) throws IOException {
-        Map<Path, Path> movedFiles = new HashMap<>();  // 원본 경로 -> 타겟 경로 저장
+    public static List<FileDTO> moveFilesInDirectory(Path sourceDir, Path targetDir) throws RuntimeException {
+        if(Files.notExists(sourceDir)) {
+            throw new RuntimeException("파일이 존재하지 않습니다: " + sourceDir);
+        }
+
         log.info("파일 이동 시작: {} -> {}", sourceDir, targetDir);
+        Map<Path, Path> movedFiles = new HashMap<>();  // 원본 경로 -> 타겟 경로 저장
+        List<FileDTO> fileDTOs = new ArrayList<>();
         try {
+
             // 1. 타겟 폴더 생성
             createDirectoryIfNotExists(targetDir);
 
             // 2. sourceDir 안에 있는 모든 파일을 targetDir로 이동
+            List<String> existingFileNames = new ArrayList<>(Files.list(targetDir)
+                    .map(path -> path.getFileName().toString())
+                    .toList());
             List<Path> paths = Files.list(sourceDir).toList();
             for(Path sourcePath : paths) {
-                Path targetPath = targetDir.resolve(sourcePath.getFileName());
+                String originalFileName = sourcePath.getFileName().toString();
+                String fileName = getUniqueFileName(sourcePath.getFileName().toString(), existingFileNames);
+                Path targetPath = targetDir.resolve(fileName);
                 Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
                 log.info("파일 이동 성공: {} -> {}", sourcePath, targetPath);
+
                 movedFiles.put(sourcePath, targetPath);
+                existingFileNames.add(fileName);
+                fileDTOs.add(FileDTO.builder()
+                        .fileId(UUID.randomUUID().toString())
+                        .fileName(originalFileName)
+                        .filePath(targetPath.toString().replace("\\", "/"))
+                        .fileExt(getFileExtension(fileName))
+                        .fileSize(Files.size(targetPath))
+                        .build());
             }
+            log.info("파일 이동 완료: {} -> {}", sourceDir, targetDir);
 
             // 3. sourceDir 삭제
             deleteFile(sourceDir);
             log.info("폴더 삭제 성공: {}", sourceDir);
-            log.info("파일 이동 완료: {} -> {}", sourceDir, targetDir);
+            log.info("파일 이동 종료: {} -> {}", sourceDir, targetDir);
 
         } catch (IOException e) {
-            log.error("오류 발생: 파일 원복 시도 중...");
+            log.error("파일 이동 중 오류 발생: 파일 원복 시도 중...");
             movedFiles.forEach((sourcePath, targetPath) -> {
                 try {
                     Files.move(targetPath, sourcePath, StandardCopyOption.REPLACE_EXISTING);
@@ -135,9 +179,10 @@ public class CustomFileUtil {
                     log.error("파일 원복 중 오류 발생: {} -> {}", targetPath, sourcePath, e1);
                 }
             });
-            log.error("파일 이동 중 오류 발생: {} -> {}", sourceDir, targetDir, e);
-            throw e;
+            throw new RuntimeException("파일 이동 중 오류 발생", e);
         }
+
+        return fileDTOs;
     }
 
     // 파일 삭제
@@ -151,19 +196,30 @@ public class CustomFileUtil {
     }
 
     public static String getUniqueFileName(String originalFilename, List<String> existingFiles) {
-        String baseName = originalFilename;
-        String extension = getFileExtension(originalFilename);
-        int count = 1;
-
-        while (existingFiles.contains(originalFilename)) {
-            originalFilename = baseName + "_" + count + extension;
-            count++;
+        if (originalFilename == null || originalFilename.isEmpty()) {
+            throw new IllegalArgumentException("파일 이름이 유효하지 않습니다.");
+        }
+    
+        int dotIndex = originalFilename.lastIndexOf(".");
+        
+        // 확장자가 없는 경우
+        if (dotIndex == -1) {
+            throw new IllegalArgumentException("확장자가 없는 파일 이름입니다: " + originalFilename);
         }
 
-        return originalFilename;
+        String baseName = originalFilename.substring(0, originalFilename.lastIndexOf("."));
+        String extension = originalFilename.substring(dotIndex);
+
+        String newFileName = originalFilename;
+        int count = 1;
+        while (existingFiles.contains(newFileName)) {
+            newFileName = baseName + "(" + count++ + ")" + extension;
+        }
+
+        return newFileName;
     }
 
-    private static String getFileExtension(String fileName) {
+    public static String getFileExtension(String fileName) {
         int lastIndex = fileName.lastIndexOf('.');
         if (lastIndex == -1) {
             return "";
