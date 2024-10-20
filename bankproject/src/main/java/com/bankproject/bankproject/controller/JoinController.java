@@ -10,7 +10,7 @@ import com.bankproject.bankproject.service.JoinService;
 
 @Controller
 public class JoinController {
-
+    //생성자 주입으로 바꿔야해,, ㅠ^ㅠ
     @Autowired
     private JoinService joinService;
 
@@ -29,7 +29,8 @@ public class JoinController {
 
         joinService.joinProcess(joinDTO);
 
+        System.out.println("민둔민둔");
 
-        return "redirect:/login";
+        return "redirect:/main"; // 완료 후 
     }
 }

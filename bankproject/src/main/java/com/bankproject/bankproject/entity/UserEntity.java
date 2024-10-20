@@ -15,11 +15,19 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id;//key
+
+
+    private String brithdate;
 
     @Column(unique = true) // 중복되면 안되기 때문에
     private String username;
+
     private String password;
+
+    private String acount;
+    
+    private String acount_pwd;
 
     private String role;
 }
