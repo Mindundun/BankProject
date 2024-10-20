@@ -79,4 +79,4 @@ tasks.named('asciidoctor') {
 	dependsOn test
 }
 
-buildDir = 'bin'
+//buildDir = 'bin'

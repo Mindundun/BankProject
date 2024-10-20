@@ -36,10 +36,19 @@ public class SecurityConfig {
                         .permitAll()
                 );
 
+                
         http
-                .csrf((auth) -> auth.disable());
+               .csrf((auth) -> auth.disable());
+
+
+
+
+        http
+            .logout((auth) -> auth.logoutUrl("/logout")
+                    .logoutSuccessUrl("/"));
 
         return http.build();
+
     }
 
         
