@@ -28,14 +28,8 @@ public class JoinService {
 
         UserEntity data = new UserEntity();
 
-        data.setUsername(joinDTO.getId());
-        
-        data.setUsername(joinDTO.getBrithdate());
         data.setUsername(joinDTO.getUsername());
         data.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword())); //비밀번호 암호화
-        data.setUsername(joinDTO.getAcount());
-        data.setUsername(bCryptPasswordEncoder.encode(joinDTO.getAcount_pwd())); //계좌 비밀번호 암호화
-        
         data.setRole("ROLE_ADMIN"); // 일단 무조건 admin으로 해봄 나중에 변경예정
 
 
