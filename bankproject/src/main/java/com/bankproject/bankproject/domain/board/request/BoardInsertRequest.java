@@ -1,10 +1,11 @@
 package com.bankproject.bankproject.domain.board.request;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BoardInsertRequest {
 
     private String category;
@@ -12,6 +13,6 @@ public class BoardInsertRequest {
     private String title;
     private String content;
 
-    private List<String> randomKey;
+    private String randomKey;
 
 }

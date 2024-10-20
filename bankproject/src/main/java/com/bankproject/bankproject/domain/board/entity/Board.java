@@ -3,11 +3,13 @@ package com.bankproject.bankproject.domain.board.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.bankproject.bankproject.domain.board.dto.FileDTO;
 import com.bankproject.bankproject.domain.board.enums.BoardType;
-import com.bankproject.bankproject.entity.UserEntity;
+import com.bankproject.bankproject.global.dto.FileDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,10 +21,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,11 +30,11 @@ import lombok.NoArgsConstructor;
 
 @Table(name = "bank_board")
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
+@EntityListeners(AuditingEntityListener.class)
 public class Board {
 
     @Id
@@ -47,10 +46,6 @@ public class Board {
     @Enumerated(EnumType.STRING)
     private BoardType type;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-
     private String title;
 
     @Column(columnDefinition = "TEXT")
@@ -59,8 +54,17 @@ public class Board {
     @Column(columnDefinition = "JSON")
     private String files;
 
+    @CreatedBy
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @CreatedDate
     @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    @LastModifiedBy
+    @Column(name = "last_modified_by")
+    private String lastModifiedBy;
 
     @Column(name = "read_count")
     private Integer readCount;
@@ -74,19 +78,8 @@ public class Board {
             this.readCount = 0;
         }
 
-        if(this.createdDate == null) {
-            this.createdDate = LocalDateTime.now();
-        }
-
         if(this.isDeleted == null) {
             this.isDeleted = false;
-        }
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        if(this.createdDate == null) {
-            this.createdDate = LocalDateTime.now();
         }
     }
 

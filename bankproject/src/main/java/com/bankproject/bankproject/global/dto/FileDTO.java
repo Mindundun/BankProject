@@ -1,6 +1,7 @@
 package com.bankproject.bankproject.global.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -40,6 +41,20 @@ public class FileDTO {
         this.updatedDate = LocalDateTime.now();
         this.updatedId = updatedId;
         this.useYn = false;
+    }
+
+    public static FileResponseDTO of(FileDTO fileDTO) {
+        return FileResponseDTO.builder()
+                .fileId(fileDTO.getFileId())
+                .fileName(fileDTO.getFileName())
+                .build();
+    }
+
+    public static List<FileResponseDTO> of(List<FileDTO> files) {
+        return files.stream()
+                .filter(FileDTO::getUseYn)
+                .map(FileDTO::of)
+                .toList();
     }
 
 }
