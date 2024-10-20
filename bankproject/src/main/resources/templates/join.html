@@ -683,8 +683,8 @@
                         </tr> -->
                         <!-- <tr>
                             <th>계좌비밀번호</th>
-                            <td><input type="password" name="asdfgh" placeholder="0000"/><span>4자리 ~ 6자리 숫자</span></td>
-                        </tr> -->
+                            <td><input type="password" name="password" placeholder="0000" maxlength="6" id="num"/><span>4자리 ~ 6자리 숫자</span><span id="num-text" style="color: red;"></span></td>
+                        </tr>
                     </table>
                         <div class="join-btn">
                             <input type="submit" value="확인" class="join-chk"/>
@@ -694,5 +694,20 @@
             </div>
         </main>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const num = document.querySelector('#num');
+            const numText = document.querySelector('#num-text');
+            num.addEventListener('keyup', function(){
+                const val = num.value;
+                if(val.length <= 3) {
+                    numText.innerHTML = '4자리이상 입력해주세요.'
+                } else {
+                    numText.innerHTML = ''
+                }
+            })
+        });
+    </script>
 </body>
 </html>
