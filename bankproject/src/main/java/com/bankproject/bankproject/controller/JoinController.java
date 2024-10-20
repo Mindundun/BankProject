@@ -3,6 +3,7 @@ package com.bankproject.bankproject.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.bankproject.bankproject.dto.JoinDTO;
@@ -23,7 +24,7 @@ public class JoinController {
 
 
     @PostMapping("/joinProc")
-    public String joinProcess(JoinDTO joinDTO) {
+    public String joinProcess(@ModelAttribute JoinDTO joinDTO) {
 
         System.out.println(joinDTO.getUsername());
 
@@ -31,6 +32,6 @@ public class JoinController {
 
         System.out.println("민둔민둔");
 
-        return "redirect:/main"; // 완료 후 
+        return "redirect:/login"; // 완료 후 
     }
 }
