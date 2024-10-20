@@ -22,6 +22,7 @@
                 <div class="idPass">
                     <input id="username" type="text" name="username" placeholder="아이디" class="id"/>
                     <input id="password" type="password" name="password" placeholder="패스워드" class="pass"/>
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
                     <!-- 로그인 상태 유지 시켜주세요 -->
                     <div class="loginChk">
                         <div class="check"><input type="checkbox" name ="loginChk" value="true"><span>로그인 상태유지</span></div>
