@@ -57,6 +57,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                 .select(board)
                 .from(board)
                 .where(builder)
+                .orderBy(board.id.desc())
                 .fetch();
 
         return result;

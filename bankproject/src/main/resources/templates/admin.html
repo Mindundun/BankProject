@@ -13,7 +13,7 @@
 	<link rel="stylesheet" th:href="@{/css/admin.css}">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 	<!-- js -->
-    <script src="/js/index.js"></script>
+    <script src="/js/admin.js"></script>
 </head>
 <body>
     <div id="admin-wrap">
@@ -42,7 +42,7 @@
                         <p class="group">관리자 ㅣ 입사일 : 2024. 10. 19</p>
                     </div>
                     <ul class="aside-nav">
-                        <li class="aside-menu" data-index="1"><a href="#" ><span class="material-symbols-outlined" >favorite</span>예금·적금 상품</a></li>
+                        <li class="aside-menu active" data-index="1"><a href="#" ><span class="material-symbols-outlined" >favorite</span>예금·적금 상품</a></li>
                         <li class="aside-menu" data-index="2"><a href="#" ><span class="material-symbols-outlined">monitoring</span>증권 관리</a></li>
                         <li class="aside-menu" data-index="3"><a href="#" ><span class="material-symbols-outlined">monitoring</span>금융 소식지</a></li>
                         <li class="aside-menu" data-index="4"><a href="#" ><span class="material-symbols-outlined">person_search</span>고객 관리</a></li>
@@ -155,7 +155,7 @@
                         <!-- //admin-main -->
                         <div class="btn"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
                     </div>
-                    <!-- //증권관리 -->
+                    <!-- //금융 소식 -->
                     <div class="admin-detail">
                         <h2>금융 소식</h2>
                         <h4>조회된 항목은 <span class="number">0</span> 건입니다.</h4>
@@ -179,7 +179,7 @@
                             </main>
                         </div>
                         <!-- //admin-main -->
-                        <div class="btn"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
+                        <div class="btn" onclick="insertNews()"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
                     </div>
                     <!-- //금융소식지 -->
                     <div class="admin-detail">
@@ -258,6 +258,24 @@
                         <!-- //admin-main -->
                         <div class="btn"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
                     </div>
+
+                    <div id="insertBox">
+                        <div id="newInsertBox">
+                            <h2>금융 소식 작성</h2>
+                            <hr style="margin: 10px 0;">
+                            <h3 style="padding: 10px;">제목</h3>
+                            <input type="text" id="newsTitle">
+                            <hr style="margin: 10px 0;">
+                            <h3 style="padding: 10px;">내용</h3>
+                            <textarea id="newscontent" style="width: 100%; resize: none; height: 800px; overflow : scroll;"></textarea>
+                            
+                            <input type="file" id="newInsertFile" multiple>
+                            <div style="display: flex; justify-content: right; gap: 10px; margin-top: 50px;">
+                                <button style="width: 100px; padding: 15px 20px; background: #26a7e2;  border-radius: 50px; border: none; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer;" onclick="insertPostNews()">등록</button>
+                                <button style="width: 100px; padding: 15px 20px; background: #ccc;  border-radius: 50px; border: none; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer;" onclick="insertPostNews()">취소</button>
+                            </div>
+                        </div>
+                    </div>
                     <!-- //부서별계정 -->
                 </div>
             </div>
@@ -265,6 +283,8 @@
     </div>
 
     <script>
+        let randomKey = "GS1729516445668";
+
         document.addEventListener('DOMContentLoaded', function () {
             const menuLinks = document.querySelectorAll('.aside-nav > li');
             const contentDivs = document.querySelectorAll('#con-main > .admin-detail');
@@ -276,16 +296,84 @@
 
                     // 모든 콘텐츠 숨기기
                     contentDivs.forEach(div => div.classList.remove('active'));
+                    const activeDiv = document.querySelectorAll(`#insertBox > div`);
+                    activeDiv.forEach(div => div.style.display = 'none');
 
                     // 해당하는 콘텐츠 보이기
                     contentDivs[index - 1].classList.add('active');
+
+                    menuLinks.forEach(link => link.classList.remove('active'));
+                    this.classList.add('active');
                 });
+            });
+
+            const newIserFile = document.querySelector('#newInsertFile');
+            newIserFile.addEventListener('change', function() {
+                const formData = new FormData();
+                Array.from(newIserFile.files).forEach(file => formData.append('file', file));
+
+                fetch('/api/v1/board/fileUpload', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json' // JSON 응답을 기대
+                    },
+                    body: formData
+                })
+                .then(res => {
+                    if(res.status == 200) {
+                        return res.json()
+                    } else {
+                        throw new Error('파일 업로드 실패');
+                    }
+                })
+                .then(res => {
+                    randomKey = res.randomKey;
+                    console.log('Random Key:', randomKey);
+                })
+                .catch(err => console.error(err));
             });
         });
     </script>
 
     <!-- 정보변경 박스 -->
-     <script>
+    <script>
+        function insertNews() {
+            detailBoxNone();
+            const insertBox = document.querySelector('#newInsertBox');
+            insertBox.style.display = 'block';
+        }
+
+        function detailBoxNone(){
+            const contentDivs = document.querySelectorAll('#con-main > .admin-detail');
+            contentDivs.forEach(div => div.classList.remove('active'));
+        }
+
+        function insertPostNews(){
+            fetch('/api/v1/board', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: document.querySelector('#newsTitle').value,
+                    content: document.querySelector('#newscontent').value,
+                    randomKey: randomKey
+                })
+            })
+            .then(res => {
+                if (res.status !== 200) {
+                    throw new Error('게시글 등록 실패');
+                }
+                return res.json();
+            })
+            .then(res => {
+                alert('등록되었습니다.');
+                location.reload();
+            })
+            .catch(err => console.error(err));
+        }
+    </script>
+    <script>
         const alertBox = document.querySelector('.open-box');
         const closeButton = document.querySelector('.close');
         const clientButton = document.querySelector('.client');
@@ -299,6 +387,12 @@
         clientButton.addEventListener('click', function() {
         alertBox.style.display = 'block';
         });
-     </script>
+    </script>
+
+    <style>
+        #insertBox > div{
+            display: none;
+        }
+    </style>
 </body>
 </html>

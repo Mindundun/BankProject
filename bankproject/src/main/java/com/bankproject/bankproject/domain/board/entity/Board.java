@@ -12,6 +12,7 @@ import com.bankproject.bankproject.domain.board.enums.BoardType;
 import com.bankproject.bankproject.global.dto.FileDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -93,6 +94,7 @@ public class Board {
 
     public void setFiles(List<FileDTO> fileDTOList) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         try {
             this.files = objectMapper.writeValueAsString(fileDTOList);
         } catch (JsonProcessingException e) {
@@ -102,6 +104,7 @@ public class Board {
 
     public List<FileDTO> getFiles() {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         try {
             return objectMapper.readValue(this.files, objectMapper.getTypeFactory().constructCollectionType(List.class, FileDTO.class));
         } catch (JsonProcessingException e) {
