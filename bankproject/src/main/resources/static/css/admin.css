@@ -25,8 +25,9 @@ body {color: #eee; font-family: 'Noto Sans KR', sans-serif, 'Gmarket Sans'; box-
 .aside-nav li:hover {background: #146CEF; border-radius: 10px; transition: 0.3s}
 .aside-menu > a > span {display: inline-block; vertical-align: middle; margin-right: 10px;}
 .fun {margin-top: 25px; display: grid; gap: 10px; grid-template-columns: repeat(2, 1fr);}
-.fun > li { border-color: rgba(255,255,255,0.3); border-radius: 10px;}
-.fun > li > a {display: flex; flex-direction: column;  justify-content: center; align-items: center; font-size: 14px;}
+.fun > li {padding: 20px; background: rgba(0, 0, 0, 0.7); border-radius: 10px; transition: all 0.3s;}
+.fun > li:hover {background: #26a7e2;}
+.fun > li > a {width: 100%;  font-size: 14px;  display: flex; flex-direction: column;  justify-content: space-between; align-items: center;}
 .fun > li > a > img {width: 42px;  padding-bottom: 10px;}
 
 /* 오른쪽 메인 */
@@ -34,14 +35,14 @@ body {color: #eee; font-family: 'Noto Sans KR', sans-serif, 'Gmarket Sans'; box-
 .admin-detail > .admin-main {width: 100%; height: 100%;  padding: 30px; font-size: 14px; background: #2C2C2C; color: #eee; border-radius: 20px;}
 .admin-detail > h2 {font-weight: 500; margin-bottom: 50px;}
 .admin-main > table {width: 100%; margin: 0 auto; text-align: center;}
-.admin-main > table th{border-top: 2px solid #eee; border-bottom: 2px solid #eee; line-height: 2;}
+.admin-main > table th{border-top: 2px solid #eee; border-bottom: 1px solid #eee; line-height: 2;}
 .admin-main > table tr{border-bottom: 1px solid #585858; line-height: 2;}
 
 /* 텝메뉴 */
 .admin-detail {display: none;}
 .admin-detail.active {display: block;}
 .admin-detail > h4 {margin-bottom: 50px;}
-.admin-detail > h4 > .small-text{font-size: 12px;}
+.admin-detail > h4 > .small-text{font-size: 14px;}
 
 
 /* 글쓰기버튼 */
@@ -62,10 +63,8 @@ body {color: #eee; font-family: 'Noto Sans KR', sans-serif, 'Gmarket Sans'; box-
 .small-cir.color3 {background: yellowgreen;}
 .small-cir.color4 {background: red;}
 .small-cir.color5 {background: lightpink;}
-
 .number {font-weight: bold; color:#146CEF;}
 .search-btn {width: 80px; padding: 15px 20px; background: rgba(0, 0, 0, 0.5);  border-radius: 10px; border: 2px solid #585858; color: #fff; font-weight: bold; cursor: pointer;}
-
 
 
 /* 금융 소식지 */
@@ -84,3 +83,13 @@ body {color: #eee; font-family: 'Noto Sans KR', sans-serif, 'Gmarket Sans'; box-
 
 /* 고객관리 */
 .client, .client-Clear {padding: 3px 10px; border: 1px solid #585858; background: rgba(0, 0, 0, 0.5);  border-radius: 10px; border: 1px solid #585858; color: #fff; cursor: pointer;}
+
+.open-box {display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; width: 500px; height: 500px; padding: 30px; color: #555; border-radius: 20px;}
+.openForm > h2 {display: flex; justify-content: space-between;}
+.openForm > h2 > span {display: inline-block; font-size: 32px; cursor: pointer;}
+.openForm > table {width: 100%; margin-top: 25px; border-top: 2px solid #333; border-bottom: 2px solid #333; color: #333; font-size: 14px;}
+.openForm > table th {width: 100px; border-right: 1px solid #333;  font-weight: 300; font-size: 14px; background: #ccc;}
+.openForm > table tr {border-bottom: 1px solid #555; }
+.openForm > table td {display: flex; align-items: center; padding: 10px;}
+.openForm > table input {display: block; background: #b3c8e2; width: 70%;  outline: none; border: 1px solid #ccc; padding: 5px;}
+.openForm > table span {font-size: 12px; color: #555; padding-left: 10px;}

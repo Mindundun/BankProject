@@ -20,7 +20,7 @@ main {max-width: 1200px; height: 100vh; margin: 0 auto;}
   ),
   url(../img/banner6-1.webp)no-repeat center/cover;
 }
-.main-text {position: absolute; top: 45%; color: #fff; line-height: 2; font-size: 24px;  }
+.main-text {position: absolute; top: 45%; color: #fff; line-height: 2; font-size: 24px; font-family: 'Gmarket Sans', sans-serif;  }
 .main-text > a {display: inline-block; padding: 10px 40px; border: none; border-radius: 50px; background: #26a7e2; color: #fff; margin-top: 70px; font-weight: 500; font-size: 16px;}
 .main-text > a:hover {background: #fff; transition: all 0.5s; color: #333;}
 

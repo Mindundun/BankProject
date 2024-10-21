@@ -11,7 +11,9 @@
 	<link rel="stylesheet" th:href="@{/css/common/fonts.css}">
 	<link rel="stylesheet" th:href="@{/css/header.css}">
 	<link rel="stylesheet" th:href="@{/css/index.css}">
+	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 	<!-- js -->
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="/js/header.js"></script>
     <script src="/js/index.js"></script>
 </head>
@@ -64,7 +66,8 @@
 			</div>
 			<div class="news-box">
 				<h2>금융 소식</h2>
-				<ul class="card-con">
+				<ul class="card-con" data-aos="fade-up"
+				data-aos-duration="3000">
 					<!-- <li>
 						<ul class="card-box">
 							<li class="card-img">이미지${card-img}</li>
@@ -80,5 +83,9 @@
 			</div>
 		</main>
 	</div>
+
+	<script>
+		AOS.init();
+	</script>
 </body>
 </html>
