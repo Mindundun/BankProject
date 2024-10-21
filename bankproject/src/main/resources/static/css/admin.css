@@ -20,9 +20,10 @@ body {color: #eee; font-family: 'Noto Sans KR', sans-serif, 'Gmarket Sans'; box-
 .admin-user > .name {font-size: 20px; font-weight: 500; line-height: 2;}
 .admin-user > .group {font-size: 14px;}
 .aside-nav {margin-bottom: 25px;}
-.aside-nav li {line-height:3; padding-left: 10px;}
+.aside-nav li {line-height:3; padding-left: 10px; border-radius: 10px; }
 .aside-nav li > a {display: inline-block; width: 100%;}
-.aside-nav li:hover {background: #146CEF; border-radius: 10px; transition: 0.3s}
+.aside-nav li:hover {background: #146CEF;}
+.aside-nav li.active {background: #146CEF;}
 .aside-menu > a > span {display: inline-block; vertical-align: middle; margin-right: 10px;}
 .fun {margin-top: 25px; display: grid; gap: 10px; grid-template-columns: repeat(2, 1fr);}
 .fun > li {padding: 20px; background: rgba(0, 0, 0, 0.7); border-radius: 10px; transition: all 0.3s;}
