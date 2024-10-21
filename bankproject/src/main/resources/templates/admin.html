@@ -13,7 +13,6 @@
 	<link rel="stylesheet" th:href="@{/css/admin.css}">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 	<!-- js -->
-    <script src="/js/admin.js"></script>
     <script src="/js/index.js"></script>
 </head>
 <body>
@@ -200,7 +199,7 @@
                             </form>
                             <button class="search-btn">조회</button>
                         </div>
-                        <h4>조회된 항목은 <span class="number">0</span class="small-text"> 건입니다.<br><span>고객의 조회된 상품명은 가장 최근에 가입한 상품만 보여집니다.</span></h4>
+                        <h4>조회된 항목은 <span class="number">0</span> 건입니다.<br><span  class="small-text">고객의 조회된 상품명은 가장 최근에 가입한 상품만 보여집니다.</span></h4>
                         <div class="admin-main">
                             <table>
                                 <tr>
@@ -220,33 +219,41 @@
                                         <button class="client-Clear">고객삭제</button>
                                     </td>
                                 </tr>
-                                
                             </table>
+                            <div class="open-box">
+                                <form action="" method="post" name="openForm" class="openForm">
+                                    <h2>회원 정보 변경<span class="material-symbols-outlined close">close</span></h2>
+                                    <table>
+                                        <tr>
+                                            <th>성함</th>
+                                            <td>홍길동</td>
+                                    
+                                        </tr>
+                                        <tr>
+                                            <th>아이디</th>
+                                            <td>japgaja12</td>
+                                    
+                                        </tr>
+                                        <tr>
+                                            <th>기존 비밀번호</th>
+                                            <td><input type="password" name="password" placeholder="Password"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>새로운 비밀번호</th>
+                                            <td><input type="password" name="password" placeholder="Password"/><button>변경하기</button></td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
                             <div class="btn"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
                         </div>
                     </div>
                     <!-- //고객관리 -->
                     <div class="admin-detail">
-                        <h2>금융 소식</h2>
+                        <h2>관리자 계정</h2>
                         <h4>조회된 항목은 <span class="number">0</span> 건입니다.</h4>
                         <div class="admin-main">
-                            <main class="main">
-                                <div class="news-box">
-                                    <ul class="card-con">
-                                        <!-- <li>
-                                            <ul class="card-box">
-                                                <li class="card-img">이미지${card-img}</li>
-                                                <li class="card-detail">
-                                                    <span class="title">제목${title}</span>
-                                                    <span class="content">내용${content}</span>
-                                                    <span class="files">url${files}</span>
-                                                    <span class="date">날짜${date}</span>
-                                                </li>
-                                            </ul>
-                                        </li> -->
-                                    </ul>
-                                </div>
-                            </main>
+                            
                         </div>
                         <!-- //admin-main -->
                         <div class="btn"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
@@ -256,10 +263,6 @@
             </div>
         </div>
     </div>
-    
-    <style>
-
-    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -281,11 +284,21 @@
         });
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tab = document.querySelector('.admin-main');
-            
+    <!-- 정보변경 박스 -->
+     <script>
+        const alertBox = document.querySelector('.open-box');
+        const closeButton = document.querySelector('.close');
+        const clientButton = document.querySelector('.client');
+
+        // 알림창 숨기기 (닫기 버튼 클릭 시)
+        closeButton.addEventListener('click', function() {
+        alertBox.style.display = 'none';
         });
-    </script>
+
+        // 알림창 보이기 (client 버튼 클릭 시)
+        clientButton.addEventListener('click', function() {
+        alertBox.style.display = 'block';
+        });
+     </script>
 </body>
 </html>
