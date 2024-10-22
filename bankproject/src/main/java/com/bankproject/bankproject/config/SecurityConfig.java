@@ -2,6 +2,7 @@ package com.bankproject.bankproject.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +25,7 @@ public class SecurityConfig {
           .authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                   .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc").permitAll()
+                  .requestMatchers(HttpMethod.GET, "/api/v1/board/file").permitAll()
                   .requestMatchers("/admin/**").permitAll()//.hasRole("ADMIN")
                   .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER")
                   .anyRequest().authenticated()
@@ -31,8 +33,13 @@ public class SecurityConfig {
 
         http
                 .formLogin((auth) -> auth.loginPage("/login")
-                        .loginProcessingUrl("/loginProc")
-                        .defaultSuccessUrl("/", true) // 로그인 성공 후 리다이렉트
+                        .successHandler(new CustomLoginSuccessHandler())
+                        .permitAll()
+                )
+                .logout((auth) -> auth.logoutUrl("/logout")
+                        .logoutSuccessUrl("/")              // 로그아웃 성공시 이동할 페이지
+                        .invalidateHttpSession(true)    // 세션 무효화
+                        .deleteCookies("JSESSIONID")    // 쿠키 삭제
                         .permitAll()
                 );
 

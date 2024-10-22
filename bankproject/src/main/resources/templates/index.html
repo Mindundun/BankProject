@@ -55,7 +55,12 @@
 				</div>
 				<div class="top-nav">
 					<span class="top-btn"><a href="/admin">관리자</a></span>
-					<span class="top-btn"><a href="/login">로그인</a></span>
+					<th:block th:if="${session.user == null}">
+						<span class="top-btn"><a href="/login">로그인</a></span>
+					</th:block>
+					<th:block th:if="${session.user != null}">
+						<span class="top-btn"><a href="/logout">로그아웃</a></span>
+					</th:block>
 				</div>
 			</div>
 		</header>

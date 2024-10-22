@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.bankproject.bankproject.entity.UserEntity;
 
+import lombok.Data;
+
+@Data
 public class CustomUserDetails implements UserDetails {
 
     private final UserEntity userEntity;

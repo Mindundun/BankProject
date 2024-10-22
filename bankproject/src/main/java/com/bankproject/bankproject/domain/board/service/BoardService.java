@@ -90,4 +90,12 @@ public class BoardService {
         return CustomFileUtil.fileUpload(files, fileTempDirPath, "GS");
     }
     
+    public FileDTO getFileResource(Long boardId, String fileId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+        return board.getFiles().stream()
+                .filter(file -> file.getFileId().equals(fileId) && file.getUseYn())
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("파일이 존재하지 않습니다."));
+    }
 }
