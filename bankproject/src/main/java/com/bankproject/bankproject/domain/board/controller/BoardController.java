@@ -24,6 +24,7 @@ import com.bankproject.bankproject.domain.board.request.BoardInsertRequest;
 import com.bankproject.bankproject.domain.board.request.BoardSearchRequest;
 import com.bankproject.bankproject.domain.board.response.BoardResponse;
 import com.bankproject.bankproject.domain.board.service.BoardService;
+import com.bankproject.bankproject.global.dto.FileDTO;
 import com.bankproject.bankproject.global.response.PagingResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -61,10 +62,13 @@ public class BoardController {
     }
 
     @GetMapping("/file")
-    public ResponseEntity<Resource> getFile(@RequestParam("filePath") String filePath) {
+    public ResponseEntity<Resource> getFile(@RequestParam("boardId") Long boardId, @RequestParam("fileId") String fileId) {
         try {
+
+            FileDTO fileDTO = boardService.getFileResource(boardId, fileId);
+
             // 파일 경로를 기반으로 Path 객체 생성
-            Path path = Paths.get(filePath).normalize(); // 경로 정규화
+            Path path = Paths.get(fileDTO.getFilePath()).normalize(); // 경로 정규화
             Resource resource = new UrlResource(path.toUri()); // UrlResource로 감싸기
 
             // 파일이 존재하지 않으면 404 응답

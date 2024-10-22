@@ -14,9 +14,10 @@ window.onload = function() {
         console.log(data);
         let c = '';
         data.forEach(d => {
+            debugger;
             c += `
                 <ul class="card-box">
-                    <li class="card-img" style="background:url('/api/v1/board/file?filePath=${d.files[0]?.fileUrl}') no-repeat center/cover;}"></li>
+                    <li class="card-img" style="background:url('/api/v1/board/file?boardId=${d.id}&fileId=${d.files[0]?.fileId}') no-repeat center/cover;}"></li>
                     <li class="card-detail">
                         <span class="title">제목${d.title}</span>
                         <span class="content">내용${d.content}</span>
