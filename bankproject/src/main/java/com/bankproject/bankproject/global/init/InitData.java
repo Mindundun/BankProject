@@ -23,7 +23,7 @@ public class InitData implements CommandLineRunner {
         // 초기 유저 데이터 삽입
         UserEntity user = new UserEntity();
         user.setUsername("admin");
-        user.setPassword(passwordEncoder.encode("password1!"));
+        user.setPassword(passwordEncoder.encode("1234"));
         user.setRole("ROLE_ADMIN");
 
         if(!userRepository.existsByUsername(user.getUsername()) ) {

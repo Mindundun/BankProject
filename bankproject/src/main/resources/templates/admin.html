@@ -9,7 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/common/reset.css}">
     <link rel="stylesheet" th:href="@{/css/common/all.min.css}">
     <link rel="stylesheet" th:href="@{/css/common/fonts.css}">
-	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/header-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/admin.css}">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 	<!-- js -->
@@ -67,8 +67,8 @@
                             </select>
                             <h3>금리</h3>
                             <select name="search">
-                                <option value="구분">변동금리</option>
-                                <option value="구분">고정금리</option>
+                                <option value="구분">변동</option>
+                                <option value="구분">고정</option>
                             </select>
                             <h3>구분</h3>
                             <select name="search">
@@ -282,6 +282,7 @@
         </div>
     </div>
 
+    <!-- 오른쪽 메인 콘텐츠 - 탭메뉴 형식으로 하였음. -->
     <script>
         let randomKey = "GS1729516445668";
 
@@ -373,7 +374,7 @@
             .catch(err => console.error(err));
         }
     </script>
-    <script>
+     <script>
         const alertBox = document.querySelector('.open-box');
         const closeButton = document.querySelector('.close');
         const clientButton = document.querySelector('.client');
