@@ -24,7 +24,7 @@ import com.bankproject.bankproject.domain.board.request.BoardInsertRequest;
 import com.bankproject.bankproject.domain.board.request.BoardSearchRequest;
 import com.bankproject.bankproject.domain.board.response.BoardResponse;
 import com.bankproject.bankproject.domain.board.service.BoardService;
-import com.bankproject.bankproject.global.dto.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDTO;
 import com.bankproject.bankproject.global.response.PagingResponse;
 
 import lombok.RequiredArgsConstructor;

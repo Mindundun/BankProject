@@ -17,7 +17,7 @@ import com.bankproject.bankproject.domain.board.request.BoardInsertRequest;
 import com.bankproject.bankproject.domain.board.request.BoardSearchRequest;
 import com.bankproject.bankproject.domain.board.response.BoardResponse;
 import com.bankproject.bankproject.entity.UserEntity;
-import com.bankproject.bankproject.global.dto.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDTO;
 import com.bankproject.bankproject.global.response.PagingResponse;
 import com.bankproject.bankproject.global.util.file.CustomFileUtil;
 import com.querydsl.core.Tuple;
@@ -98,4 +98,5 @@ public class BoardService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("파일이 존재하지 않습니다."));
     }
+
 }

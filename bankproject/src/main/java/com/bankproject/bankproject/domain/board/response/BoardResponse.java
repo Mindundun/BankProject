@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.bankproject.bankproject.domain.board.entity.Board;
 import com.bankproject.bankproject.entity.UserEntity;
-import com.bankproject.bankproject.global.dto.FileDTO;
-import com.bankproject.bankproject.global.dto.FileResponseDTO;
+import com.bankproject.bankproject.global.dto.file.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileResponseDTO;
 import com.querydsl.core.Tuple;
 
 import lombok.AllArgsConstructor;

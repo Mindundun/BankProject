@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bankproject.bankproject.global.dto.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDTO;
 
 import lombok.extern.slf4j.Slf4j;
 

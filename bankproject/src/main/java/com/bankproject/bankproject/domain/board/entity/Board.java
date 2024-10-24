@@ -6,15 +6,15 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.bankproject.bankproject.domain.board.enums.BoardType;
-import com.bankproject.bankproject.global.dto.FileDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.bankproject.bankproject.global.dto.file.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDTOConverter;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -47,13 +47,15 @@ public class Board {
     @Enumerated(EnumType.STRING)
     private BoardType type;
 
+    @Column(name = "title")
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(columnDefinition = "JSON")
-    private String files;
+    @Convert(converter = FileDTOConverter.class)
+    @Column(name = "files", columnDefinition = "JSON")
+    private List<FileDTO> files;
 
     @CreatedBy
     @Column(name = "created_by")
@@ -64,8 +66,12 @@ public class Board {
     private LocalDateTime createdDate;
 
     @LastModifiedBy
-    @Column(name = "last_modified_by")
-    private String lastModifiedBy;
+    @Column(name = "updated_by")
+    private String updateBy;
+
+    @LastModifiedDate
+    @Column(name = "updated_date")
+    private LocalDateTime updateDate;
 
     @Column(name = "read_count")
     private Integer readCount;
@@ -90,26 +96,6 @@ public class Board {
 
     public void delete() {
         this.isDeleted = true;
-    }
-
-    public void setFiles(List<FileDTO> fileDTOList) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        try {
-            this.files = objectMapper.writeValueAsString(fileDTOList);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("파일 정보를 JSON으로 변환하는데 실패했습니다.");
-        }
-    }
-
-    public List<FileDTO> getFiles() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        try {
-            return objectMapper.readValue(this.files, objectMapper.getTypeFactory().constructCollectionType(List.class, FileDTO.class));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("파일 정보를 객체로 변환하는데 실패했습니다.");
-        }
     }
 
 }

@@ -43,7 +43,7 @@ public class Account {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    //계좌 종류 (예: 예금, 적금, 대출 등)
+    //계좌 종류 (예: 예금, 적금)
     @ManyToOne
     @JoinColumn(name = "account_item_id")
     private AccountItem accountItem;
