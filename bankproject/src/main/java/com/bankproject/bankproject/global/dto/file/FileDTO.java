@@ -1,4 +1,4 @@
-package com.bankproject.bankproject.global.dto;
+package com.bankproject.bankproject.global.dto.file;
 
 import java.time.LocalDateTime;
 import java.util.List;

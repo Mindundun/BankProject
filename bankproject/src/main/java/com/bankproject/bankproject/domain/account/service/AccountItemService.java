@@ -16,7 +16,7 @@ import com.bankproject.bankproject.domain.account.request.AccountItemInsertReque
 import com.bankproject.bankproject.domain.account.request.AccountItemSearchRequest;
 import com.bankproject.bankproject.domain.account.request.AccountItemUpdateRequest;
 import com.bankproject.bankproject.domain.account.response.AccountItemResponse;
-import com.bankproject.bankproject.global.dto.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDTO;
 import com.bankproject.bankproject.global.response.PagingResponse;
 import com.bankproject.bankproject.global.util.file.CustomFileUtil;
 
@@ -58,7 +58,7 @@ public class AccountItemService {
 
         // 파일 정보 저장
         accountItem = accountItem.toBuilder()
-                .itemFiles(files)
+                .files(files)
                 .build();
         accountItemRepository.save(accountItem);
 
@@ -73,14 +73,14 @@ public class AccountItemService {
 
         List<String> deleteFileIds = request.getDeleteFileIds();
         if (deleteFileIds != null && !deleteFileIds.isEmpty()) {
-            List<FileDTO> files = accountItem.getItemFiles();
+            List<FileDTO> files = accountItem.getFiles();
             for (FileDTO file : files) {
                 if (deleteFileIds.contains(file.getFileId())) {
                     file.onUpdate("admin"); // 현재 사용자 ID를 전달
                 }
             }
             accountItem = accountItem.toBuilder()
-                    .itemFiles(files)
+                    .files(files)
                     .build();
         }
 
@@ -89,11 +89,11 @@ public class AccountItemService {
             Path sourceDir = Paths.get(fileTempDirPath, ramdomKey);
             Path targetDir = Paths.get(fileDirPath, DEFAULT_FILE_PATH, accountItem.getId().toString());
             List<FileDTO> newFiles = CustomFileUtil.moveFilesInDirectory(sourceDir, targetDir);
-            List<FileDTO> existingFiles = accountItem.getItemFiles();
+            List<FileDTO> existingFiles = accountItem.getFiles();
             existingFiles.addAll(newFiles);
             // 파일 정보 저장
             accountItem = accountItem.toBuilder()
-                    .itemFiles(existingFiles)
+                    .files(existingFiles)
                     .build();
         }
 

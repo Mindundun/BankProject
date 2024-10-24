@@ -1,4 +1,4 @@
-package com.bankproject.bankproject.global.dto;
+package com.bankproject.bankproject.global.dto.file;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

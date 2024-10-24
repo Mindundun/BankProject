@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.bankproject.bankproject.domain.account.dto.AccountItemDetail;
 import com.bankproject.bankproject.domain.account.entity.AccountItem;
-import com.bankproject.bankproject.global.dto.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +25,7 @@ public class AccountItemResponse {
 
     private String itemDesc; // 계좌 항목 설명
 
-    private List<FileDTO> itemfiles; // 계좌 항목 파일
+    private List<FileDTO> files; // 계좌 항목 파일
 
     private AccountItemDetail detail; // 계좌 항목 상세 설명
 
@@ -35,7 +35,7 @@ public class AccountItemResponse {
                 .itemCode(accountItem.getItemCode())
                 .itemName(accountItem.getItemName())
                 .itemDesc(accountItem.getItemDesc())
-                .itemfiles(accountItem.getItemFiles())
+                .files(accountItem.getFiles())
                 .detail(accountItem.getDetail())
                 .build();
         return response;
