@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bankproject.bankproject.domain.board.entity.Board;
-import com.bankproject.bankproject.domain.board.enums.BoardType;
 import com.bankproject.bankproject.domain.board.repository.BoardRepository;
 import com.bankproject.bankproject.domain.board.request.BoardInsertRequest;
 import com.bankproject.bankproject.domain.board.request.BoardSearchRequest;
 import com.bankproject.bankproject.domain.board.response.BoardResponse;
 import com.bankproject.bankproject.entity.UserEntity;
 import com.bankproject.bankproject.global.dto.file.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDTOWrapper;
 import com.bankproject.bankproject.global.response.PagingResponse;
 import com.bankproject.bankproject.global.util.file.CustomFileUtil;
 import com.querydsl.core.Tuple;
@@ -65,7 +65,7 @@ public class BoardService {
         log.info("insertBoard 실행 request: {}", request);
 
         Board board = Board.builder()
-            .type(BoardType.guide)
+            .type(request.getCategory())
             .title(request.getTitle())
             .content(request.getContent())
             .build();
@@ -76,8 +76,7 @@ public class BoardService {
         Path sourceDir = Paths.get(fileTempDirPath, randomKey);
         Path targetDir = Paths.get(fileDirPath, "/board", board.getId().toString());
         List<FileDTO> files = CustomFileUtil.moveFilesInDirectory(sourceDir, targetDir);
-
-        board.setFiles(files);
+        board.setFileDTOWrapper(new FileDTOWrapper(files));
         boardRepository.save(board);
 
         BoardResponse response = BoardResponse.of(board);
@@ -93,9 +92,8 @@ public class BoardService {
     public FileDTO getFileResource(Long boardId, String fileId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
-        return board.getFiles().stream()
-                .filter(file -> file.getFileId().equals(fileId) && file.getUseYn())
-                .findFirst()
+        
+        return board.getFileDTOWrapper().getFileDTOById(fileId)
                 .orElseThrow(() -> new RuntimeException("파일이 존재하지 않습니다."));
     }
 

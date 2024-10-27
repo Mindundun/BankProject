@@ -2,9 +2,10 @@ package com.bankproject.bankproject.domain.board.enums;
 
 public enum BoardType {
 
-    notice("공지사항"),
-    guide("이용안내"),
-    qna("질문과 답변게시판");
+    FINANCE_NEWS("금융뉴스"),
+    NOTICE("공지사항"),
+    GUIDE("이용안내"),
+    QNA("질문과 답변게시판");
 
     private String value;
 
