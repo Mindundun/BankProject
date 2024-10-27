@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,12 +55,8 @@
 				</div>
 				<div class="top-nav">
 					<span class="top-btn"><a href="/admin">관리자</a></span>
-					<th:block th:if="${session.user == null}">
-						<span class="top-btn"><a href="/login">로그인</a></span>
-					</th:block>
-					<th:block th:if="${session.user != null}">
-						<span class="top-btn"><a href="/logout">로그아웃</a></span>
-					</th:block>
+					<span sec:authorize="isAnonymous()" class="top-btn"><a href="/login">로그인</a></span>
+					<span sec:authorize="isAuthenticated()" class="top-btn"><a href="/logout">로그아웃</a></span>
 				</div>
 			</div>
 		</header>
@@ -72,8 +68,7 @@
 			</div>
 			<div class="news-box">
 				<h2>금융 소식</h2>
-				<ul class="card-con" data-aos="fade-up"
-				data-aos-duration="3000">
+				<ul class="card-con" data-aos="fade-up" data-aos-duration="3000">
 					<!-- <li>
 						<ul class="card-box">
 							<li class="card-img">이미지${card-img}</li>

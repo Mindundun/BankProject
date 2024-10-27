@@ -1,6 +1,8 @@
 package com.bankproject.bankproject.domain.board.controller;
 
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -78,15 +80,19 @@ public class BoardController {
 
             // 파일을 반환 (Content-Type은 적절히 설정)
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"") // inline으로 변경
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + URLEncoder.encode(resource.getFilename(), StandardCharsets.UTF_8) + "\"") // inline으로 변경
                     .contentType(MediaType.IMAGE_JPEG) // 파일의 실제 MIME 타입으로 수정 (예: IMAGE_JPEG, IMAGE_PNG 등)
                     .body(resource);
             // return ResponseEntity.ok()
             //         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
             //         .contentType(MediaType.APPLICATION_OCTET_STREAM) // 필요에 따라 MIME 타입 수정
             //         .body(resource);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
         } catch (MalformedURLException e) {
             return ResponseEntity.badRequest().build(); // 잘못된 URL 경로의 경우
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 

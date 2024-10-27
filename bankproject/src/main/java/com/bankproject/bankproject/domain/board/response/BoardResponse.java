@@ -34,7 +34,7 @@ public class BoardResponse {
                     .id(board.getId())
                     .title(board.getTitle())
                     .content(board.getContent())
-                    .files(FileDTO.of(board.getFiles()))
+                    .files(FileDTO.of(board.getFileDTOWrapper().getActiveFiles()))
                     .createdAt(board.getCreatedDate())
                     .readCount(board.getReadCount())
                     .build();
@@ -48,7 +48,7 @@ public class BoardResponse {
                     .id(board.getId())
                     .title(board.getTitle())
                     .content(board.getContent())
-                    .files(FileDTO.of(board.getFiles()))
+                    .files(FileDTO.of(board.getFileDTOWrapper().getActiveFiles()))
                     .createdAt(board.getCreatedDate())
                     .readCount(board.getReadCount())
                     .username(user.getUsername())

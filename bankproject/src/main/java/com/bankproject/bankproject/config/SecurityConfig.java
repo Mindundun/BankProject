@@ -25,7 +25,7 @@ public class SecurityConfig {
           .authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                   .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc").permitAll()
-                  .requestMatchers(HttpMethod.GET, "/api/v1/board/file").permitAll()
+                  .requestMatchers(HttpMethod.GET, "/api/v1/board/**").permitAll()
                   .requestMatchers("/admin/**").permitAll()//.hasRole("ADMIN")
                   .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER")
                   .anyRequest().authenticated()
@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout((auth) -> auth.logoutUrl("/logout")
-                        .logoutSuccessUrl("/")              // 로그아웃 성공시 이동할 페이지
+                        .logoutSuccessUrl("/login?logout=logout")              // 로그아웃 성공시 이동할 페이지
                         .invalidateHttpSession(true)    // 세션 무효화
                         .deleteCookies("JSESSIONID")    // 쿠키 삭제
                         .permitAll()

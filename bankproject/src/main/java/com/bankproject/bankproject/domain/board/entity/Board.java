@@ -1,7 +1,6 @@
 package com.bankproject.bankproject.domain.board.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,8 +9,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.bankproject.bankproject.domain.board.enums.BoardType;
-import com.bankproject.bankproject.global.dto.file.FileDTO;
 import com.bankproject.bankproject.global.dto.file.FileDTOConverter;
+import com.bankproject.bankproject.global.dto.file.FileDTOWrapper;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -55,7 +54,7 @@ public class Board {
 
     @Convert(converter = FileDTOConverter.class)
     @Column(name = "files", columnDefinition = "JSON")
-    private List<FileDTO> files;
+    private FileDTOWrapper fileDTOWrapper;
 
     @CreatedBy
     @Column(name = "created_by")
@@ -83,10 +82,6 @@ public class Board {
     protected void onCreate() {
         if(this.readCount == null) {
             this.readCount = 0;
-        }
-
-        if(this.isDeleted == null) {
-            this.isDeleted = false;
         }
     }
 
