@@ -6,20 +6,27 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public class CustomAuditorAware implements AuditorAware<String> {
+import com.bankproject.bankproject.entity.UserEntity;
+
+public class CustomAuditorAware implements AuditorAware<UserEntity> {
 
     @SuppressWarnings("null")
     @Override
-    public Optional<String> getCurrentAuditor() {
+    public Optional<UserEntity> getCurrentAuditor() {
         // Spring Security의 인증 정보를 가져옴
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // 인증된 사용자가 없는 경우 (예: 비인증 요청)
-        if (authentication == null || !authentication.isAuthenticated()) {
+        // 인증 정보가 없거나 익명 사용자일 경우
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
             return Optional.empty();
         }
 
-        // 인증된 사용자의 이름 (또는 ID)을 반환
-        return Optional.of(authentication.getName()); // 흠 oauth2로 인증을 받는 경우에는 어떻게 처리할까?
+        // 인증된 사용자가 UserEntity 타입인 경우에만 반환
+        if (authentication.getPrincipal() instanceof UserEntity) {
+            return Optional.of((UserEntity) authentication.getPrincipal());
+        } else {
+            return Optional.empty();
+        }
     }
+
 }

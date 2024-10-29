@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bankproject.bankproject.global.dto.file.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -128,14 +128,14 @@ public class CustomFileUtil {
     }
 
     // 파일 이동
-    public static List<FileDTO> moveFilesInDirectory(Path sourceDir, Path targetDir) throws RuntimeException {
+    public static List<FileDto> moveFilesInDirectory(Path sourceDir, Path targetDir) throws RuntimeException {
         if(Files.notExists(sourceDir)) {
             throw new RuntimeException("파일이 존재하지 않습니다: " + sourceDir);
         }
 
         log.info("파일 이동 시작: {} -> {}", sourceDir, targetDir);
         Map<Path, Path> movedFiles = new HashMap<>();  // 원본 경로 -> 타겟 경로 저장
-        List<FileDTO> fileDTOs = new ArrayList<>();
+        List<FileDto> fileDTOs = new ArrayList<>();
         try {
 
             // 1. 타겟 폴더 생성
@@ -155,7 +155,7 @@ public class CustomFileUtil {
 
                 movedFiles.put(sourcePath, targetPath);
                 existingFileNames.add(fileName);
-                fileDTOs.add(FileDTO.builder()
+                fileDTOs.add(FileDto.builder()
                         .fileId(UUID.randomUUID().toString())
                         .fileName(originalFileName)
                         .filePath(targetPath.toString().replace("\\", "/"))

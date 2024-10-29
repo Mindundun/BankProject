@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)  // 알 수 없는 필드 무시
-public class FileDTO {
+public class FileDto {
 
     private String fileId; // 파일 ID
 
@@ -41,17 +41,23 @@ public class FileDTO {
         this.useYn = false;
     }
 
-    public static FileResponseDTO of(FileDTO fileDTO) {
-        return FileResponseDTO.builder()
+    public static FileResponseDto of(FileDto fileDTO) {
+        if(fileDTO == null) {
+            return FileResponseDto.builder().build();
+        }
+        return FileResponseDto.builder()
                 .fileId(fileDTO.getFileId())
                 .fileName(fileDTO.getFileName())
                 .build();
     }
 
-    public static List<FileResponseDTO> of(List<FileDTO> files) {
+    public static List<FileResponseDto> of(List<FileDto> files) {
+        if(files == null || files.isEmpty()) {
+            return List.of();
+        }
         return files.stream()
-                .filter(FileDTO::getUseYn)
-                .map(FileDTO::of)
+                .filter(FileDto::getUseYn)
+                .map(FileDto::of)
                 .toList();
     }
 

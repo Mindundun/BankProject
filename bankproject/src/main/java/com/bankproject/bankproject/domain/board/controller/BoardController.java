@@ -26,7 +26,7 @@ import com.bankproject.bankproject.domain.board.request.BoardInsertRequest;
 import com.bankproject.bankproject.domain.board.request.BoardSearchRequest;
 import com.bankproject.bankproject.domain.board.response.BoardResponse;
 import com.bankproject.bankproject.domain.board.service.BoardService;
-import com.bankproject.bankproject.global.dto.file.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDto;
 import com.bankproject.bankproject.global.response.PagingResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -67,7 +67,7 @@ public class BoardController {
     public ResponseEntity<Resource> getFile(@RequestParam("boardId") Long boardId, @RequestParam("fileId") String fileId) {
         try {
 
-            FileDTO fileDTO = boardService.getFileResource(boardId, fileId);
+            FileDto fileDTO = boardService.getFileResource(boardId, fileId);
 
             // 파일 경로를 기반으로 Path 객체 생성
             Path path = Paths.get(fileDTO.getFilePath()).normalize(); // 경로 정규화

@@ -8,15 +8,15 @@ import java.util.stream.Collectors;
 import lombok.Data;
 
 @Data
-public class FileDTOWrapper {
+public class FileDtoWrapper {
 
-    private List<FileDTO> files;
+    private List<FileDto> files;
 
-    public FileDTOWrapper() {
+    public FileDtoWrapper() {
         this.files = new ArrayList<>();
     }
 
-    public FileDTOWrapper(List<FileDTO> files) {
+    public FileDtoWrapper(List<FileDto> files) {
         if (files == null) {
             this.files = new ArrayList<>();
             return;
@@ -25,15 +25,33 @@ public class FileDTOWrapper {
     }
 
     public long getActiveFileCount() {
-        return files == null ? 0 : files.stream().filter(FileDTO::getUseYn).count();
+        return files == null ? 0 : files.stream().filter(FileDto::getUseYn).count();
     }
 
-    public List<FileDTO> getActiveFiles() {
-        return files == null ? new ArrayList<>() : files.stream().filter(FileDTO::getUseYn).collect(Collectors.toList());
+    public List<FileDto> getActiveFiles() {
+        return files == null ? new ArrayList<>() : files.stream().filter(FileDto::getUseYn).collect(Collectors.toList());
     }
 
-    public Optional<FileDTO> getFileDTOById(String fileId) {
+    public Optional<FileDto> getFileDTOById(String fileId) {
         return files.stream().filter(file -> file.getFileId().equals(fileId) && file.getUseYn()).findFirst();
+    }
+
+    public void deleteFiles(List<String> deleteFileIds) {
+        if (deleteFileIds == null || deleteFileIds.isEmpty()) {
+            return;
+        }
+        files.forEach(file -> {
+            if (deleteFileIds.contains(file.getFileId())) {
+                file.setUseYn(false);
+            }
+        });
+    }
+
+    public void addFile(List<FileDto> fileList) {
+        if (fileList == null) {
+            return;
+        }
+        files.addAll(fileList); // 일단 뒤로만 붙이기!
     }
 
 }

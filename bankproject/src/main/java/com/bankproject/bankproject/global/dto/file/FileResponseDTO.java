@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FileResponseDTO {
+public class FileResponseDto {
 
     private String fileId; // 파일 ID
 

@@ -16,7 +16,7 @@ import com.bankproject.bankproject.domain.account.request.AccountItemInsertReque
 import com.bankproject.bankproject.domain.account.request.AccountItemSearchRequest;
 import com.bankproject.bankproject.domain.account.request.AccountItemUpdateRequest;
 import com.bankproject.bankproject.domain.account.response.AccountItemResponse;
-import com.bankproject.bankproject.global.dto.file.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDto;
 import com.bankproject.bankproject.global.response.PagingResponse;
 import com.bankproject.bankproject.global.util.file.CustomFileUtil;
 
@@ -54,7 +54,7 @@ public class AccountItemService {
         String randomKey = request.getRamdomKey();
         Path sourceDir = Paths.get(fileTempDirPath, randomKey);
         Path targetDir = Paths.get(fileDirPath, DEFAULT_FILE_PATH, accountItem.getId().toString());
-        List<FileDTO> files = CustomFileUtil.moveFilesInDirectory(sourceDir, targetDir);
+        List<FileDto> files = CustomFileUtil.moveFilesInDirectory(sourceDir, targetDir);
 
         // 파일 정보 저장
         accountItem = accountItem.toBuilder()
@@ -73,8 +73,8 @@ public class AccountItemService {
 
         List<String> deleteFileIds = request.getDeleteFileIds();
         if (deleteFileIds != null && !deleteFileIds.isEmpty()) {
-            List<FileDTO> files = accountItem.getFiles();
-            for (FileDTO file : files) {
+            List<FileDto> files = accountItem.getFiles();
+            for (FileDto file : files) {
                 if (deleteFileIds.contains(file.getFileId())) {
                     file.onUpdate("admin"); // 현재 사용자 ID를 전달
                 }
@@ -88,8 +88,8 @@ public class AccountItemService {
         if (ramdomKey != null) {
             Path sourceDir = Paths.get(fileTempDirPath, ramdomKey);
             Path targetDir = Paths.get(fileDirPath, DEFAULT_FILE_PATH, accountItem.getId().toString());
-            List<FileDTO> newFiles = CustomFileUtil.moveFilesInDirectory(sourceDir, targetDir);
-            List<FileDTO> existingFiles = accountItem.getFiles();
+            List<FileDto> newFiles = CustomFileUtil.moveFilesInDirectory(sourceDir, targetDir);
+            List<FileDto> existingFiles = accountItem.getFiles();
             existingFiles.addAll(newFiles);
             // 파일 정보 저장
             accountItem = accountItem.toBuilder()
