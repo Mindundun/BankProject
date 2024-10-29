@@ -1,6 +1,7 @@
 package com.bankproject.bankproject.domain.board.request;
 
-import com.bankproject.bankproject.domain.board.enums.BoardType;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.validation.constraints.NotBlank;
@@ -8,9 +9,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BoardInsertRequest {
-
-    private BoardType category;
+public class BoardUpdateRequest {
 
     @NotBlank
     private String title;
@@ -19,6 +18,8 @@ public class BoardInsertRequest {
     private String content;
 
     private String randomKey;
+
+    private List<String> deleteFileIds;
 
     private Boolean isPin;
 

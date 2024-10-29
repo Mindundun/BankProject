@@ -10,8 +10,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.bankproject.bankproject.domain.account.dto.AccountItemDetail;
-import com.bankproject.bankproject.global.dto.file.FileDTO;
 import com.bankproject.bankproject.global.dto.file.FileDTOConverter;
+import com.bankproject.bankproject.global.dto.file.FileDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.Column;
@@ -54,7 +54,7 @@ public class AccountItem {
 
     @Convert(converter = FileDTOConverter.class)
     @Column(name = "files", columnDefinition = "JSON")
-    private List<FileDTO> files; // 계좌 항목 파일
+    private List<FileDto> files; // 계좌 항목 파일
 
     @Column(name = "item_detail", columnDefinition = "JSON")
     private String itemDetail; // 계좌 항목 상세 설명

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.bankproject.bankproject.domain.account.dto.AccountItemDetail;
 import com.bankproject.bankproject.domain.account.entity.AccountItem;
-import com.bankproject.bankproject.global.dto.file.FileDTO;
+import com.bankproject.bankproject.global.dto.file.FileDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +25,7 @@ public class AccountItemResponse {
 
     private String itemDesc; // 계좌 항목 설명
 
-    private List<FileDTO> files; // 계좌 항목 파일
+    private List<FileDto> files; // 계좌 항목 파일
 
     private AccountItemDetail detail; // 계좌 항목 상세 설명
 

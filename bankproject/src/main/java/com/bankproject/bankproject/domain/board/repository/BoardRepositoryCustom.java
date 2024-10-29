@@ -3,13 +3,14 @@ package com.bankproject.bankproject.domain.board.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
+
 import com.bankproject.bankproject.domain.board.entity.Board;
 import com.bankproject.bankproject.domain.board.request.BoardSearchRequest;
-import com.querydsl.core.Tuple;
 
 public interface BoardRepositoryCustom {
-    List<Tuple> findBoardWithUser(BoardSearchRequest request);
-    List<Board> findBoard(BoardSearchRequest request);
+    List<Board> findBoardWithUser(BoardSearchRequest request, Pageable pageable);
+    List<Board> findPinBoardWithUser();
     Long countBoard(BoardSearchRequest request);
-    Optional<Tuple> findBoardWithUserById(Long id);
+    Optional<Board> findByIdWithUser(Long id);
 }

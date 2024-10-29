@@ -1,16 +1,16 @@
 package com.bankproject.bankproject.domain.board.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.bankproject.bankproject.domain.board.entity.Board;
 import com.bankproject.bankproject.domain.board.entity.QBoard;
 import com.bankproject.bankproject.domain.board.request.BoardSearchRequest;
-import com.bankproject.bankproject.entity.QUserEntity;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -23,9 +23,8 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Tuple> findBoardWithUser(BoardSearchRequest request) {
+    public List<Board> findBoardWithUser(BoardSearchRequest request, Pageable pageable) {
         QBoard board = QBoard.board;
-        QUserEntity user = QUserEntity.userEntity;
 
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -33,29 +32,39 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
             builder.and(board.title.contains(request.getSearch()));
         }
 
-        List<Tuple> result = queryFactory
-                .select(board, user)
+        builder.and(
+            board.isPin.eq(false) // 핀 아닌 게시글
+            .or(board.isPin.eq(true).and(board.pinExpireDate.before(LocalDateTime.now()))) // 핀 게시글이지만 유효 기간이 지난 경우
+        );
+
+
+        List<Board> result = queryFactory
+                .select(board)
                 .from(board)
-                .join(user).on(board.createdBy.eq(user.username)).fetchJoin()
+                .join(board.createUser).fetchJoin()
                 .where(builder)
+                .orderBy(board.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return result;
     }
 
     @Override
-    public List<Board> findBoard(BoardSearchRequest request) {
+    public List<Board> findPinBoardWithUser() {
         QBoard board = QBoard.board;
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        if (request.getSearch() != null) {
-            builder.and(board.title.contains(request.getSearch()));
-        }
+        builder.and(board.isPin.eq(true));
+        LocalDateTime now = LocalDateTime.now();
+        builder.and(board.pinExpireDate.after(now));
 
         List<Board> result = queryFactory
                 .select(board)
                 .from(board)
+                .join(board.createUser).fetchJoin()
                 .where(builder)
                 .orderBy(board.id.desc())
                 .fetch();
@@ -83,14 +92,13 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     }
 
     @Override
-    public Optional<Tuple> findBoardWithUserById(Long id) {
+    public Optional<Board> findByIdWithUser(Long id) {
         QBoard board = QBoard.board;
-        QUserEntity user = QUserEntity.userEntity;
 
-        Tuple result = queryFactory
-                .select(board, user)
+        Board result = queryFactory
+                .select(board)
                 .from(board)
-                .join(user).on(board.createdBy.eq(user.username)).fetchJoin()
+                .join(board.createUser).fetchJoin()
                 .where(board.id.eq(id))
                 .fetchOne();
 
