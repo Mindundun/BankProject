@@ -8,7 +8,7 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter
-public class FileDTOConverter implements AttributeConverter<FileDtoWrapper, String> {
+public class FileDtoConverter implements AttributeConverter<FileDtoWrapper, String> {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 

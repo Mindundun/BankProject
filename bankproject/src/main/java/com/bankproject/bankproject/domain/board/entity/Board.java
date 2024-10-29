@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.bankproject.bankproject.domain.board.enums.BoardType;
 import com.bankproject.bankproject.entity.UserEntity;
-import com.bankproject.bankproject.global.dto.file.FileDTOConverter;
+import com.bankproject.bankproject.global.dto.file.FileDtoConverter;
 import com.bankproject.bankproject.global.dto.file.FileDtoWrapper;
 
 import jakarta.persistence.Column;
@@ -54,7 +54,7 @@ public class Board {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Convert(converter = FileDTOConverter.class)
+    @Convert(converter = FileDtoConverter.class)
     @Column(name = "files", columnDefinition = "JSON")
     private FileDtoWrapper fileDTOWrapper;
 
