@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PASSBANK I 메인화면::안정된 금융생활</title>
+    <title>PASSBANK :: 안정된 금융생활</title>
 	<!-- css -->
 	<link rel="icon" th:href="@{/img/favicon-01.png}">
-	<link rel="stylesheet" th:href="@{/css/reset.css}">
-	<link rel="stylesheet" th:href="@{/css/all.min.css}">
-	<link rel="stylesheet" th:href="@{/css/fonts.css}">
+	<link rel="stylesheet" th:href="@{/css/common/reset.css}">
+	<link rel="stylesheet" th:href="@{/css/common/all.min.css}">
+	<link rel="stylesheet" th:href="@{/css/common/fonts.css}">
+	<link rel="stylesheet" th:href="@{/css/header-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/index.css}">
+	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 	<!-- js -->
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/js/header.js"></script>
     <script src="/js/index.js"></script>
 </head>
 <body>
@@ -22,7 +27,7 @@
 					<ul>
 						<li class="main-menu"><a href="#">MY</a>
 							<ul class="sub-nav">
-								<li class="sub-menu"><a href="#">마이계좌조회</a></li>
+								<li class="sub-menu"><a href="/account">마이계좌조회</a></li>
 								<li class="sub-menu"><a href="#">개인정보변경</a></li>
 							</ul>
 						</li>
@@ -38,7 +43,7 @@
 								<li class="sub-menu"><a href="#">증권이체</a></li>
 							</ul>
 						</li>
-						<li class="main-menu"><a href="#">상품</a>
+						<li class="main-menu"><a href="#">증권</a>
 							<ul class="sub-nav">
 								<li class="sub-menu"><a href="#">증권 구매</a></li>
 								<li class="sub-menu"><a href="#">증권 판매</a></li>
@@ -50,7 +55,8 @@
 				</div>
 				<div class="top-nav">
 					<span class="top-btn"><a href="/admin">관리자</a></span>
-					<span class="top-btn"><a href="/login">로그인</a></span>
+					<span sec:authorize="isAnonymous()" class="top-btn"><a href="/login">로그인</a></span>
+					<span sec:authorize="isAuthenticated()" class="top-btn"><a href="/logout">로그아웃</a></span>
 				</div>
 			</div>
 		</header>
@@ -62,7 +68,7 @@
 			</div>
 			<div class="news-box">
 				<h2>금융 소식</h2>
-				<ul class="card-con">
+				<ul class="card-con" data-aos="fade-up" data-aos-duration="3000">
 					<!-- <li>
 						<ul class="card-box">
 							<li class="card-img">이미지${card-img}</li>
@@ -77,6 +83,49 @@
 				</ul>
 			</div>
 		</main>
+		<footer>
+			<div class="f-inner">
+				<div class="f-left">
+					<address>
+						<h4>고객센터</h4>
+						<span>전화 : 1588-1234 (평일 오전9시 ~ 오후 6시)</span>
+						<span>보이스피싱/사기 : 1588-5678 (24시간 연중무휴)</span>
+						<span>이메일문의 : japgaja8282@naver.com</span>
+					</address>
+					<h4>(주)패스뱅크</h4>
+					<article>
+						<div class="kim">
+							<h5>Backend : Sung Sig Kim</h5>
+							<h5>email : tjdtlr12349@gmail.com</h5>
+							<h5>Git URL : <a href="#">바로가기<span class="material-symbols-outlined">exit_to_app</span></a></h5>
+						</div>
+						<div class="park">
+							<h5>Backend : Min Kyung Park </h5>
+							<h5>email : 민경@gmail.com</h5>
+							<h5>Git URL : <a href="#">바로가기<span class="material-symbols-outlined">exit_to_app</span></a></h5>
+						</div>
+						<div class="hwang">
+							<h5>Publisher : Ji Hyun Hwang </h5>
+							<h5>email : ghkdwlgus000@gmail.com</h5>
+							<h5>Git URL : <a href="#">바로가기<span class="material-symbols-outlined">exit_to_app</span></a></h5>
+						</div>
+					</article>
+				</div>
+				<div class="f-right">
+					<ul>
+						<li><a href="#">마이페이지</a></li>
+						<li><a href="#">상품</a></li>
+						<li><a href="#">이체</a></li>
+						<li><a href="#">증권</a></li>
+					</ul>
+					<p>© copyright 2024 Example Corp.</p>
+				</div>
+			</div>
+		</footer>
 	</div>
+
+	<script>
+		AOS.init();
+	</script>
 </body>
 </html>

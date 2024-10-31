@@ -132,7 +132,12 @@ window.onload = function() {
     data.forEach(d => {
         c += `
             <ul class="card-box">
-                <li class="card-img" style="background:url('/api/v1/board/file?filePath=${d.files[0].fileUrl}') no-repeat center/cover;}"></li>
+                <li class="card-img">
+                    <img src="/api/v1/board/file?boardId=${d.id}&fileId=${d.files[0]?.fileId}"
+                        alt="게시물 이미지"
+                        loading="lazy"
+                        style="width:100%; height:100%; object-fit:cover;"/>
+                </li>
                 <li class="card-detail">
                     <span class="title">제목${d.title}</span>
                     <span class="content">내용${d.content}</span>

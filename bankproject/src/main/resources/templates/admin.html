@@ -1,12 +1,399 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Main Page</title>
+    <title>PASSBANK :: 관리자페이지</title>
+    <!-- css -->
+	<link rel="icon" th:href="@{/img/favicon-01.png}">
+    <link rel="stylesheet" th:href="@{/css/common/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common/all.min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/fonts.css}">
+	<link rel="stylesheet" th:href="@{/css/header-footer.css}">
+	<link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+	<!-- js -->
+    <script src="/js/admin.js"></script>
 </head>
 <body>
-admin page
+    <div id="admin-wrap">
+        <header class="admin-header">
+            <div id="header-box">
+                <h1 class="logo"><a href="/"><img src="/img/logo_white.png" alt="패스뱅크"></a></h1>
+                <div class="nav">
+                    <ul>
+                        <!-- <li class="main-menu"><a href="#">메인화면</a></li> -->
+                        <!-- <li class="main-menu"><a href="#">고객관리</a></li> -->
+                    </ul>
+                </div>
+                <div class="top-nav">
+                    <span class="top-btn"><a href="#">설정</a></span>
+                    <span class="top-btn"><a href="/logout">로그아웃</a></span>
+                </div>
+            </div>
+        </header>
+        <!-- //header -->
+        <div class="inner">
+            <div class="con">
+                <aside>
+                    <div class="admin-user">
+                        <img src="/img/person.png" alt="유저">
+                        <p class="name">${admin}님 환영합니다.</p>
+                        <p class="group">관리자 ㅣ 입사일 : 2024. 10. 19</p>
+                    </div>
+                    <ul class="aside-nav">
+                        <li class="aside-menu active" data-index="1"><a href="#" ><span class="material-symbols-outlined" >favorite</span>예금·적금 상품</a></li>
+                        <li class="aside-menu" data-index="2"><a href="#" ><span class="material-symbols-outlined">monitoring</span>증권 관리</a></li>
+                        <li class="aside-menu" data-index="3"><a href="#" ><span class="material-symbols-outlined">monitoring</span>금융 소식지</a></li>
+                        <li class="aside-menu" data-index="4"><a href="#" ><span class="material-symbols-outlined">person_search</span>고객 관리</a></li>
+                        <li class="aside-menu" data-index="5"><a href="#" ><span class="material-symbols-outlined">atr</span>부서별계정</a></li>
+                    </ul>
+                    <hr>
+                    <ul class="fun">
+                        <li><a href="#" target="_blank"><img src="/img/dash-pencil-purple.png" alt="공지사항">공지사항</a></li>
+                        <li><a href="https://securities.koreainvestment.com/main/Main.jsp?n_media=27758&n_query=%ED%95%9C%EA%B5%AD%ED%88%AC%EC%9E%90%EC%A6%9D%EA%B6%8C&n_rank=1&n_ad_group=grp-a001-04-000000041279778&n_ad=nad-a001-04-000000324347896&n_keyword_id=nkw-a001-04-000006115364320&n_keyword=%ED%95%9C%EA%B5%AD%ED%88%AC%EC%9E%90%EC%A6%9D%EA%B6%8C&n_campaign_type=4&n_contract=tct-a001-04-000000000972264&n_ad_group_type=5&NaPm=ct%3Dm2in2gn4%7Cci%3D0yC0001mXfjBstsi10Y6%7Ctr%3Dbrnd%7Chk%3Df4f7473fe848897f5d23c8a2f71a596aa6c67e69%7Cnacn%3D6e6JCog9CpKXA" target="_blank"><img src="/img/dash-search.png" alt="주식시장">주식시장</a></li>
+                        <li><a href="https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&ssc=tab.nx.all&query=%EC%98%A4%EB%8A%98%EB%82%A0%EC%94%A8&oquery=%ED%95%9C%EA%B5%AD%ED%88%AC%EC%9E%90%EC%A6%9D%EA%B6%8C&tqi=ixU1Swqo1SossObajE8sssssssw-136166" target="_blank"><img src="/img/dash-student-form.png" alt="날씨정보">날씨정보</a></li>
+                        <li><a href="https://www.kakaocorp.com/page/service/service/KakaoTalk" target="_blank"><img src="/img/dash-chat.png" alt="카카오톡">카카오톡</a></li>
+                    </ul>
+                </aside>
+                <div id="con-main">
+                    <div class="admin-detail active">
+                        <h2>예금·적금 상품</h2>
+                        <div class="search">
+                            <h3>년도</h3>
+                            <select name="search">
+                                <option value="년도">2024</option>
+                                <option value="년도">2023</option>
+                            </select>
+                            <h3>금리</h3>
+                            <select name="search">
+                                <option value="구분">변동</option>
+                                <option value="구분">고정</option>
+                            </select>
+                            <h3>구분</h3>
+                            <select name="search">
+                                <option value="구분">적금</option>
+                                <option value="구분">예금</option>
+                            </select>
+                            <h3>과세</h3>
+                            <select name="search">
+                                <option value="구분">과세</option>
+                                <option value="구분">비과세</option>
+                            </select>
+                            <form action="">
+                                <input type="text" name="username" placeholder="상품명을 입력하세요."/><span></span>
+                            </form>
+                            <button class="search-btn">조회</button>
+                        </div>
+                        <h4>조회된 항목은 <span class="number">0</span> 건입니다.</h4>
+                        <div class="admin-main">
+                            <table>
+                                <tr>
+                                    <th><span class="small-cir color1"></span>상품명</th>
+                                    <th><span class="small-cir color2"></span>변동금리/고정금리</th>
+                                    <th><span class="small-cir color3"></span>적금/예금</th>
+                                    <th><span class="small-cir color4"></span>과세/비과세</th>
+                                    <th><span class="small-cir color5"></span>납입기간</th>
+                                </tr>
+                                <tr>
+                                    <td>원데이 적금</td>
+                                    <td>고정금리 3.25%</td>
+                                    <td>예금</td>
+                                    <td>과세</td>
+                                    <td>1년 / 3년</td>
+                                </tr>
+                                <tr>
+                                    <td>원데이 적금</td>
+                                    <td>고정금리 3.25%</td>
+                                    <td>예금</td>
+                                    <td>과세</td>
+                                    <td>1년 / 3년</td>
+                                </tr>
+                                <tr>
+                                    <td>원데이 적금</td>
+                                    <td>고정금리 3.25%</td>
+                                    <td>예금</td>
+                                    <td>과세</td>
+                                    <td>1년 / 3년</td>
+                                </tr>
+                                <tr>
+                                    <td>원데이 적금</td>
+                                    <td>고정금리 3.25%</td>
+                                    <td>예금</td>
+                                    <td>과세</td>
+                                    <td>1년 / 3년</td>
+                                </tr>
+                                <tr>
+                                    <td>원데이 적금</td>
+                                    <td>고정금리 3.25%</td>
+                                    <td>예금</td>
+                                    <td>과세</td>
+                                    <td>1년 / 3년</td>
+                                </tr>
+                            </table>
+                            <div class="btn"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
+                        </div>
+                    </div>
+                    <!-- //예금적금상품 -->
+                    <div class="admin-detail">
+                        <h2>증권 관리</h2>
+                        <div class="admin-main">
+                            <table>
+                                <tr>
+                                    <th>상품명</th>
+                                    <th>금리</th>
+                                    <th>구분</th>
+                                </tr>
+                                <tr>
+                                    <td>원데이 적금</td>
+                                    <td>3.25%</td>
+                                    <td>과세</td>
+                                    <td>개인</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- //admin-main -->
+                        <div class="btn"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
+                    </div>
+                    <!-- //금융 소식 -->
+                    <div class="admin-detail">
+                        <h2>금융 소식</h2>
+                        <h4>조회된 항목은 <span class="number">0</span> 건입니다.</h4>
+                        <div class="admin-main">
+                            <main class="main">
+                                <div class="news-box">
+                                    <ul class="card-con">
+                                        <!-- <li>
+                                            <ul class="card-box">
+                                                <li class="card-img">이미지${card-img}</li>
+                                                <li class="card-detail">
+                                                    <span class="title">제목${title}</span>
+                                                    <span class="content">내용${content}</span>
+                                                    <span class="files">url${files}</span>
+                                                    <span class="date">날짜${date}</span>
+                                                </li>
+                                            </ul>
+                                        </li> -->
+                                    </ul>
+                                </div>
+                            </main>
+                        </div>
+                        <!-- //admin-main -->
+                        <div class="btn" onclick="insertNews()"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
+                    </div>
+                    <!-- //금융소식지 -->
+                    <div class="admin-detail">
+                        <h2>고객 관리</h2>
+                        <div class="search">
+                            <h3>고객명</h3>
+                            <form action="">
+                                <input type="text" name="username" placeholder="고객명을 입력하세요."/><span></span>
+                            </form>
+                            <h3>아이디</h3>
+                            <form action="">
+                                <input type="text" name="username" placeholder="아이디를 입력하세요."/><span></span>
+                            </form>
+                            <h3>상품명</h3>
+                            <form action="">
+                                <input type="text" name="username" placeholder="상품명을 입력하세요."/><span></span>
+                            </form>
+                            <button class="search-btn">조회</button>
+                        </div>
+                        <h4>조회된 항목은 <span class="number">0</span> 건입니다.<br><span  class="small-text">고객의 조회된 상품명은 가장 최근에 가입한 상품만 보여집니다.</span></h4>
+                        <div class="admin-main">
+                            <table>
+                                <tr>
+                                    <th><span class="small-cir color1"></span>고객명</th>
+                                    <th><span class="small-cir color2"></span>아이디</th>
+                                    <th><span class="small-cir color3"></span>가입일</th>
+                                    <th><span class="small-cir color4"></span>상품명</th>
+                                    <th><span class="small-cir color5"></span>기타</th>
+                                </tr>
+                                <tr>
+                                    <td>홍길동</td>
+                                    <td>japgaja12</td>
+                                    <td>{today}</td>
+                                    <td>원데이적금</td>
+                                    <td>
+                                        <button class="client">정보변경</button>
+                                        <button class="client-Clear">고객삭제</button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="open-box">
+                                <form action="" method="post" name="openForm" class="openForm">
+                                    <h2>회원 정보 변경<span class="material-symbols-outlined close">close</span></h2>
+                                    <table>
+                                        <tr>
+                                            <th>성함</th>
+                                            <td>홍길동</td>
+                                    
+                                        </tr>
+                                        <tr>
+                                            <th>아이디</th>
+                                            <td>japgaja12</td>
+                                    
+                                        </tr>
+                                        <tr>
+                                            <th>기존 비밀번호</th>
+                                            <td><input type="password" name="password" placeholder="Password"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>새로운 비밀번호</th>
+                                            <td><input type="password" name="password" placeholder="Password"/><button>변경하기</button></td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="btn"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
+                        </div>
+                    </div>
+                    <!-- //고객관리 -->
+                    <div class="admin-detail">
+                        <h2>관리자 계정</h2>
+                        <h4>조회된 항목은 <span class="number">0</span> 건입니다.</h4>
+                        <div class="admin-main">
+                            
+                        </div>
+                        <!-- //admin-main -->
+                        <div class="btn"><button class="circle-btn"><span class="material-symbols-outlined">app_registration</span></button></div>
+                    </div>
+
+                    <div id="insertBox">
+                        <div id="newInsertBox">
+                            <h2>금융 소식 작성</h2>
+                            <hr style="margin: 10px 0;">
+                            <h3 style="padding: 10px;">제목</h3>
+                            <input type="text" id="newsTitle">
+                            <hr style="margin: 10px 0;">
+                            <h3 style="padding: 10px;">내용</h3>
+                            <textarea id="newscontent" style="width: 100%; resize: none; height: 800px; overflow : scroll;"></textarea>
+                            
+                            <input type="file" id="newInsertFile" multiple>
+                            <div style="display: flex; justify-content: right; gap: 10px; margin-top: 50px;">
+                                <button style="width: 100px; padding: 15px 20px; background: #26a7e2;  border-radius: 50px; border: none; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer;" onclick="insertPostNews()">등록</button>
+                                <button style="width: 100px; padding: 15px 20px; background: #ccc;  border-radius: 50px; border: none; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer;" onclick="insertPostNews()">취소</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- //부서별계정 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 오른쪽 메인 콘텐츠 - 탭메뉴 형식으로 하였음. -->
+    <script>
+        let randomKey = "";
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuLinks = document.querySelectorAll('.aside-nav > li');
+            const contentDivs = document.querySelectorAll('#con-main > .admin-detail');
+
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const index = this.getAttribute('data-index');
+
+                    // 모든 콘텐츠 숨기기
+                    contentDivs.forEach(div => div.classList.remove('active'));
+                    const activeDiv = document.querySelectorAll(`#insertBox > div`);
+                    activeDiv.forEach(div => div.style.display = 'none');
+
+                    // 해당하는 콘텐츠 보이기
+                    contentDivs[index - 1].classList.add('active');
+
+                    menuLinks.forEach(link => link.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            const newIserFile = document.querySelector('#newInsertFile');
+            newIserFile.addEventListener('change', function() {
+                const formData = new FormData();
+                Array.from(newIserFile.files).forEach(file => formData.append('file', file));
+
+                fetch('/api/v1/board/fileUpload', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json' // JSON 응답을 기대
+                    },
+                    body: formData
+                })
+                .then(res => {
+                    if(res.status == 200) {
+                        return res.json()
+                    } else {
+                        throw new Error('파일 업로드 실패');
+                    }
+                })
+                .then(res => {
+                    randomKey = res.randomKey;
+                    console.log('Random Key:', randomKey);
+                })
+                .catch(err => console.error(err));
+            });
+        });
+    </script>
+
+    <!-- 정보변경 박스 -->
+    <script>
+        function insertNews() {
+            detailBoxNone();
+            const insertBox = document.querySelector('#newInsertBox');
+            insertBox.style.display = 'block';
+        }
+
+        function detailBoxNone(){
+            const contentDivs = document.querySelectorAll('#con-main > .admin-detail');
+            contentDivs.forEach(div => div.classList.remove('active'));
+        }
+
+        function insertPostNews(){
+            fetch('/api/v1/board', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: document.querySelector('#newsTitle').value,
+                    content: document.querySelector('#newscontent').value,
+                    randomKey: randomKey
+                })
+            })
+            .then(res => {
+                if (res.status !== 200) {
+                    throw new Error('게시글 등록 실패');
+                }
+                return res.json();
+            })
+            .then(res => {
+                alert('등록되었습니다.');
+                location.reload();
+            })
+            .catch(err => console.error(err));
+        }
+    </script>
+     <script>
+        const alertBox = document.querySelector('.open-box');
+        const closeButton = document.querySelector('.close');
+        const clientButton = document.querySelector('.client');
+
+        // 알림창 숨기기 (닫기 버튼 클릭 시)
+        closeButton.addEventListener('click', function() {
+        alertBox.style.display = 'none';
+        });
+
+        // 알림창 보이기 (client 버튼 클릭 시)
+        clientButton.addEventListener('click', function() {
+        alertBox.style.display = 'block';
+        });
+    </script>
+
+    <style>
+        #insertBox > div{
+            display: none;
+        }
+    </style>
 </body>
 </html>

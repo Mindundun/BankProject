@@ -3,8 +3,9 @@ package com.bankproject.bankproject.domain.board.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.bankproject.bankproject.domain.board.dto.FileDTO;
 import com.bankproject.bankproject.domain.board.entity.Board;
+import com.bankproject.bankproject.global.dto.file.FileDto;
+import com.bankproject.bankproject.global.dto.file.FileResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,10 +21,10 @@ public class BoardResponse {
     private Long id;
     private String title;
     private String content;
-    private List<FileDTO> files;
-    private LocalDateTime createdAt;
+    private List<FileResponseDto> files;
     private Integer readCount;
-    private String username;
+    private String regUser;
+    private LocalDateTime regDate;
 
     public static BoardResponse of(Board board) {
         if (board != null) {
@@ -31,12 +32,20 @@ public class BoardResponse {
                     .id(board.getId())
                     .title(board.getTitle())
                     .content(board.getContent())
-                    .files(board.getFiles())
-                    .createdAt(board.getCreatedDate())
+                    .files(FileDto.of(board.getFileDTOWrapper().getActiveFiles()))
                     .readCount(board.getReadCount())
-                    .username(board.getUser().getUsername())
+                    .regUser(board.getCreateUser().getUsername())
+                    .regDate(board.getCreatedDate())
                     .build();
         }
         return BoardResponse.builder().build();
     }
+
+    public static List<BoardResponse> ofList(List<Board> boardList) {
+        if(boardList == null || boardList.isEmpty()) {
+            return List.of();
+        }
+        return boardList.stream().map(BoardResponse::of).toList();
+    }
+
 }

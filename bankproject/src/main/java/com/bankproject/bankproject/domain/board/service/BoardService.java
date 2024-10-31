@@ -1,32 +1,36 @@
 package com.bankproject.bankproject.domain.board.service;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bankproject.bankproject.domain.board.dto.FileDTO;
 import com.bankproject.bankproject.domain.board.entity.Board;
-import com.bankproject.bankproject.domain.board.enums.BoardType;
+import com.bankproject.bankproject.domain.board.event.BoardCreateEvent;
+import com.bankproject.bankproject.domain.board.event.BoardUpdateEvent;
 import com.bankproject.bankproject.domain.board.repository.BoardRepository;
 import com.bankproject.bankproject.domain.board.request.BoardInsertRequest;
+import com.bankproject.bankproject.domain.board.request.BoardSearchRequest;
+import com.bankproject.bankproject.domain.board.request.BoardUpdateRequest;
 import com.bankproject.bankproject.domain.board.response.BoardResponse;
 import com.bankproject.bankproject.entity.UserEntity;
-import com.bankproject.bankproject.global.exception.ServiceSystemException;
+import com.bankproject.bankproject.global.dto.file.FileDto;
+import com.bankproject.bankproject.global.dto.file.FileDtoWrapper;
+import com.bankproject.bankproject.global.response.PagingResponse;
 import com.bankproject.bankproject.global.util.file.CustomFileUtil;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,105 +41,143 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+    private final ApplicationEventPublisher publisher;
+
     @Value("${custom.fileTempDirPath}")
     private String fileTempDirPath;
 
     @Value("${custom.fileDirPath}")
     private String fileDirPath;
 
-    // 파일 업로드 로직
-    public Map<String, Object> fileUpload(List<MultipartFile> files) {
-        try {
-            
-            Map<String, Object> result = new HashMap<>();
-            String randomKey = "V" + System.currentTimeMillis();
-            
-            Path tempDir = Paths.get(fileTempDirPath, randomKey);
-            List<String> uploadFilePaths = CustomFileUtil.saveFilesWithDefaultPath(files, tempDir);
+    public PagingResponse<BoardResponse> getBoardList(BoardSearchRequest request) {
+        Integer page = Optional.ofNullable(request.getPage()).orElse(1);
+        Integer size = Optional.ofNullable(request.getPageOfSize()).orElse(50);
+        Pageable pageable = PageRequest.of(page - 1, size);
 
-            result.put("randomKey", randomKey);
-            result.put("uploadedFilePaths", uploadFilePaths);
-            return result;
+        List<Board> boardList = boardRepository.findBoardWithUser(request, pageable);
+        Long totalCount = boardRepository.countBoard(request);
+        List<BoardResponse> responseList = BoardResponse.ofList(boardList);
 
-        } catch (IOException e) {
-            log.error("파일 업로드 중 IOException 발생: {}", e.getMessage());
-            throw new ServiceSystemException("파일 업로드 중 오류가 발생했습니다.", e);
-        } catch (Exception e) {
-            log.error("파일 업로드 중 일반 오류 발생: {}", e.getMessage());
-            throw new ServiceSystemException("파일 업로드 중 오류가 발생했습니다.", e);
-        }
-    }
-
-    @Transactional
-    public BoardResponse insertBoard(HttpServletRequest req, BoardInsertRequest request) {
-        int userId = 1;
-        UserEntity user = new UserEntity();
-        user.setId(userId);
-
-        Board board = Board.builder()
-            .type(BoardType.guide)
-            .title(request.getTitle())
-            .content(request.getContent())
-            .user(user)
-            .build();
-
-        Path uploadDir = Paths.get(fileDirPath, "/board");
-        if (!Files.exists(uploadDir)) {
-            try {
-                Files.createDirectories(uploadDir);
-            } catch (IOException e) {
-                log.error("업로드 디렉토리 생성 실패: {}", e.getMessage());
-                throw new RuntimeException("업로드 디렉토리 생성에 실패했습니다.");
-            }
-        }
-
-        if(request.getRandomKey() != null) {
-            List<String> randomKey = request.getRandomKey();
-            List<FileDTO> fileDTOList = new ArrayList<>();
-            for (String key : randomKey) {
-                Path tempDir = Paths.get(fileTempDirPath, key);
-                if (!Files.exists(tempDir)) {
-                    log.warn("임시 디렉토리가 존재하지 않습니다: {}", key);
-                    continue;
-                }
-
-                // tempDir에 있는 파일을 uploadDir로 이동
-                try {
-                    // 이동할 파일의 이름
-                    Files.list(tempDir).forEach(file -> {
-                        String originalFileName = file.getFileName().toString();
-                        String newFileName = UUID.randomUUID().toString() + "_" + originalFileName; // 새로운 파일 이름 생성
-                        Path targetFilePath = uploadDir.resolve(newFileName);
-
-                        try {
-                            Files.move(file, targetFilePath, StandardCopyOption.REPLACE_EXISTING);
-                            // FileDTO 객체 생성 및 추가
-                            fileDTOList.add(new FileDTO(originalFileName, targetFilePath.toString().replace("\\", "/")));
-                        } catch (IOException e) {
-                            log.error("파일 이동 실패: {}", e.getMessage());
-                            throw new RuntimeException("파일 이동에 실패했습니다.");
-                        }
-                    });
-
-                } catch (IOException e) {
-                    log.error("파일 목록 가져오기 실패: {}", e.getMessage());
-                    throw new RuntimeException("파일 목록 가져오기에 실패했습니다.");
-                }
-            }
-            board.setFiles(fileDTOList);
-        }
-        boardRepository.save(board);
-        BoardResponse response = BoardResponse.of(board);
+        PagingResponse<BoardResponse> response = PagingResponse.of(page, size, totalCount, responseList);
         return response;
     }
 
-    public List<BoardResponse> getBoardList() {
-        List<Board> boardList = boardRepository.findAll();
-        List<BoardResponse> boardResponseList = new ArrayList<>(boardList.size());
-        for (Board board : boardList) {
-            boardResponseList.add(BoardResponse.of(board));
+    public BoardResponse getBoardById(Long id) {
+        Board board = boardRepository.findByIdWithUser(id)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+        return BoardResponse.of(board);
+    }
+
+    @Transactional
+    public BoardResponse insertBoard(BoardInsertRequest request) {
+
+        log.info("insertBoard 실행 request: {}", request);
+
+        Board board = Board.builder()
+            .type(request.getCategory())
+            .title(request.getTitle())
+            .content(request.getContent())
+            .build();
+        boardRepository.save(board);
+
+        // 파일 이관
+        String randomKey = request.getRandomKey();
+        Path sourceDir = Paths.get(fileTempDirPath, randomKey);
+        Path targetDir = Paths.get(fileDirPath, "/board", board.getId().toString());
+        List<FileDto> files = CustomFileUtil.moveFilesInDirectory(sourceDir, targetDir);
+        board.setFileDTOWrapper(new FileDtoWrapper(files));
+        boardRepository.save(board);
+
+        BoardResponse response = BoardResponse.of(board);
+        log.info("insertBoard 종료");
+
+        publisher.publishEvent(new BoardCreateEvent(this, board));
+
+        return response;
+    }
+
+    @Transactional
+    public BoardResponse updateBoard(Long id, BoardUpdateRequest request) {
+        Board board = boardRepository.findByIdWithUser(id)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+
+        UserEntity currentUser = getCurrentUser();
+        if (!board.getCreateUser().equals(currentUser)) {
+            throw new RuntimeException("작성자만 수정할 수 있습니다.");
         }
-        return boardResponseList;
+        log.info("updateBoard 실행 request: {}", request);
+
+        board.setTitle(request.getTitle());
+        board.setContent(request.getContent());
+
+        if(request.getIsPin() != null && request.getPinExpireDate() != null) {
+            LocalDateTime pinExpireDate = LocalDateTime.parse(request.getPinExpireDate());
+            LocalDateTime now = LocalDateTime.now();
+            if(pinExpireDate.isBefore(now)) {
+                throw new RuntimeException("유효하지 않은 고정기간입니다.");
+            }
+            board.setIsPin(request.getIsPin());
+            board.setPinExpireDate(pinExpireDate);
+        }
+
+        FileDtoWrapper fileDtoWrapper = board.getFileDTOWrapper();
+
+        // 파일 삭제
+        List<String> deleteFileIds = request.getDeleteFileIds();
+        if (deleteFileIds != null && !deleteFileIds.isEmpty()) {
+            fileDtoWrapper.deleteFiles(deleteFileIds);
+        }
+
+        // 파일 이관
+        String randomKey = request.getRandomKey();
+        if(randomKey != null) {
+            Path sourceDir = Paths.get(fileTempDirPath, randomKey);
+            Path targetDir = Paths.get(fileDirPath, "/board", board.getId().toString());
+            List<FileDto> files = CustomFileUtil.moveFilesInDirectory(sourceDir, targetDir);
+            fileDtoWrapper.addFile(files);
+        }
+        board.setFileDTOWrapper(fileDtoWrapper);
+        boardRepository.save(board);
+        log.info("updateBoard 종료");
+
+        publisher.publishEvent(new BoardUpdateEvent(this, board));
+
+        return BoardResponse.of(board);
+    }
+
+    @Transactional
+    public void deleteBoard(Long id) {
+        Board board = boardRepository.findByIdWithUser(id)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+
+        UserEntity currentUser = getCurrentUser();
+        if (!board.getCreateUser().equals(currentUser)) {
+            throw new RuntimeException("작성자만 수정할 수 있습니다.");
+        }
+
+        board.delete();
+        boardRepository.save(board);
+    }
+
+    // 파일 업로드
+    public Map<String, Object> fileUpload(List<MultipartFile> files) {
+        return CustomFileUtil.fileUpload(files, fileTempDirPath, "GS");
+    }
+
+    public FileDto getFileResource(Long boardId, String fileId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+        
+        return board.getFileDTOWrapper().getFileDTOById(fileId)
+                .orElseThrow(() -> new RuntimeException("파일이 존재하지 않습니다."));
+    }
+
+    private UserEntity getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            return (UserEntity) authentication.getPrincipal(); // 현재 사용자 반환
+        }
+        return null; // 인증되지 않은 경우 null 반환
     }
 
 }

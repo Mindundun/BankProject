@@ -1,17 +1,27 @@
 package com.bankproject.bankproject.domain.board.request;
 
-import java.util.List;
+import com.bankproject.bankproject.domain.board.enums.BoardType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BoardInsertRequest {
 
-    private String category;
-    private String subCategory;
+    private BoardType category;
+
+    @NotBlank
     private String title;
+
+    @NotBlank
     private String content;
 
-    private List<String> randomKey;
+    private String randomKey;
+
+    private Boolean isPin;
+
+    private String pinExpireDate;
 
 }

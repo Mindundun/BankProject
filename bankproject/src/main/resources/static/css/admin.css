@@ -1,0 +1,96 @@
+@charset "utf-8";
+@import url('fonts.css');
+@import url('https://webfontworld.github.io/gmarket/GmarketSans.css');
+
+/* 공통 */
+body {color: #eee; font-family: 'Noto Sans KR', sans-serif, 'Gmarket Sans'; box-sizing: border-box; scroll-behavior: smooth; overflow-x: hidden;  width: 100%; height: auto; background: #121212;}
+#admin-wrap { width: 100%; height: 100%; }
+.inner {padding-top: 85px;}
+
+/* 헤더 */
+#header-box {max-width: 100%;}
+.admin-header {background: rgba(0, 0, 0, 0.7); border-bottom: 0.5px solid #eee;}
+.admin-header:hover {height: 80px;}
+
+/* 사이드 메뉴 */
+.inner > .con {display: flex;}
+.con > aside {padding: 20px; width: 300px; height: 100%; padding: 30px; background: #1f1f1f; border-radius: 20px;}
+.admin-user {display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;}
+.admin-user > img {width: 100px; background: #666; padding: 20px; border-radius: 50px;}
+.admin-user > .name {font-size: 20px; font-weight: 500; line-height: 2;}
+.admin-user > .group {font-size: 14px;}
+.aside-nav {margin-bottom: 25px;}
+.aside-nav li {line-height:3; padding-left: 10px; margin-bottom: 5px; border-radius: 10px; }
+.aside-nav li > a {display: inline-block; width: 100%; }
+.aside-nav li:hover {background: #0b3575;}
+.aside-nav li.active {background: #146CEF;}
+.aside-menu > a > span {display: inline-block; vertical-align: middle; margin-right: 10px;}
+.fun {margin-top: 25px; display: grid; gap: 10px; grid-template-columns: repeat(2, 1fr);}
+.fun > li {padding: 20px; background: rgba(0, 0, 0, 0.7); border-radius: 10px; transition: all 0.3s;}
+.fun > li:hover {background: #26a7e2;}
+.fun > li > a {width: 100%;  font-size: 14px;  display: flex; flex-direction: column;  justify-content: space-between; align-items: center;}
+.fun > li > a > img {width: 42px;  padding-bottom: 10px;}
+
+/* 오른쪽 메인 */
+#con-main {display: flex; flex-direction: column; width: 80%; height: 100%; padding: 30px; margin: 0 auto; color: #fff; position: relative;}
+.admin-detail > .admin-main {width: 100%; height: 100%;  padding: 30px; font-size: 14px; background: #2C2C2C; color: #eee; border-radius: 20px;}
+.admin-detail > h2 {font-weight: 500; margin-bottom: 50px;}
+.admin-main > table {width: 100%; margin: 0 auto; text-align: center;}
+.admin-main > table th{border-top: 2px solid #eee; border-bottom: 1px solid #eee; line-height: 2;}
+.admin-main > table tr{border-bottom: 1px solid #585858; line-height: 2;}
+
+/* 텝메뉴 */
+.admin-detail {display: none;}
+.admin-detail.active {display: block;}
+.admin-detail > h4 {margin-bottom: 50px;}
+.admin-detail > h4 > .small-text{font-size: 14px;}
+
+
+/* 글쓰기버튼 */
+.btn {display: flex; justify-content: right; margin-top: 50px; }
+.circle-btn {width: 80px; height: 80px; background: #26a7e2;  border-radius: 50px; border: none; color: #fff; font-weight: bold; cursor: pointer; position: absolute; top: 300px; right: 15px;}
+.circle-btn > span {font-size: 32px;}
+
+
+/* 예금 및 적금 상품 */
+.search {display: flex; justify-content: space-around; width: 100%; height: 80px; padding: 10px; border-radius: 20px; background: #2C2C2C; margin-bottom: 50px;}
+.search > h3 {display: flex; align-items: center; font-size: 18px;}
+.search > select, input {width: 150px; background: rgba(0, 0, 0, 0.5); color: #fff; border: 2px solid #666; border-radius: 10px;  padding: 0 20px;}
+.search > select  option,input {display: inline-block; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5);outline: none; color: #fff;}
+
+.small-cir {display: inline-block; vertical-align: middle; width: 8px; height: 8px; margin-right: 10px; border-radius: 50px;}
+.small-cir.color1 {background: lightcoral;}
+.small-cir.color2 {background: lightseagreen;}
+.small-cir.color3 {background: yellowgreen;}
+.small-cir.color4 {background: red;}
+.small-cir.color5 {background: lightpink;}
+.number {font-weight: bold; color:#146CEF;}
+.search-btn {width: 80px; padding: 15px 20px; background: rgba(0, 0, 0, 0.5);  border-radius: 10px; border: 2px solid #585858; color: #fff; font-weight: bold; cursor: pointer;}
+
+
+/* 금융 소식지 */
+.news-box {width: 100%; height: 100%; margin: 0 auto; }
+.news-box > h2 {font-size: 30px; font-weight: 500; color: #ccc; padding: 50px 0;}
+.news-box > .card-con {display: grid;align-items: center; grid-template-columns: repeat(3, 1fr); gap: 100px; }
+.card-box {display: flex; flex-direction: column; height: 400px; background: #fff; border-radius: 20px; overflow: hidden;  color: #fff; box-shadow: 1px 2px 10px #333;}
+.card-box > .card-img {background: #fff; height: 50%; color: #333; overflow: hidden; }
+.card-box > .card-img:hover { transition: all 0.3s; opacity: 0.8;}
+.card-box > .card-detail {display: flex; flex-direction: column; padding: 20px; text-overflow: ellipsis;}
+.card-detail > .title, .content, .date {color: #333;}
+.card-detail > .title { font-size: 20px; margin-bottom: 10px; font-weight: 500;}
+.card-detail > .content { font-size: 16px;}
+.card-detail > .date {font-size: 12px; margin-top: 10px;}
+
+
+/* 고객관리 */
+.client, .client-Clear {padding: 3px 10px; border: 1px solid #585858; background: rgba(0, 0, 0, 0.5);  border-radius: 10px; border: 1px solid #585858; color: #fff; cursor: pointer;}
+
+.open-box {display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; width: 500px; height: 500px; padding: 30px; color: #555; border-radius: 20px; transition: all 0.2s;}
+.openForm > h2 {display: flex; justify-content: space-between;}
+.openForm > h2 > span {display: inline-block; font-size: 32px; cursor: pointer;}
+.openForm > table {width: 100%; margin-top: 25px; border-top: 2px solid #333; border-bottom: 2px solid #333; color: #333; font-size: 14px;}
+.openForm > table th {width: 100px; border-right: 1px solid #333;  font-weight: 300; font-size: 14px; background: #ccc;}
+.openForm > table tr {border-bottom: 1px solid #555; }
+.openForm > table td {display: flex; align-items: center; padding: 10px;}
+.openForm > table input {display: block; background: #b3c8e2; width: 70%;  outline: none; border: 1px solid #ccc; padding: 5px;}
+.openForm > table span {font-size: 12px; color: #555; padding-left: 10px;}

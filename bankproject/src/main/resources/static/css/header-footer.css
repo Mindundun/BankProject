@@ -1,0 +1,41 @@
+@charset "utf-8";
+@import url('fonts.css');
+@import url('https://webfontworld.github.io/gmarket/GmarketSans.css');
+
+
+/* 헤더 메뉴 */
+header {width: 100%; height: 80px; padding: 20px; color: #fff; background: rgba(255,255,255,0.1); position: fixed; z-index: 999; transition: all 0.5s;  backdrop-filter: blur(5px); }
+#header-box {max-width: 1200px; height: 100%; margin: 0 auto;  display: flex; justify-content: space-between;  }
+#header-box > h1 {width: 200px;}
+#header-box > h1 > a {display: inline-block; vertical-align: middle;}
+#box-bg {opacity: 0;transition: 0.3s;display: flex;}
+.nav {width: 100%; text-align: center;}
+.nav > ul {display: flex; justify-content: space-around;}
+.nav  .sub-nav {position: absolute; top: 50px; width: 100%; }
+.sub-nav > .sub-menu {padding: 10px 0; opacity: 0; transition: all 0.3s; font-size: 16px; }
+.main-menu {width: 150px; position: relative; font-size: 18px; font-weight: 500;}
+.main-menu > a, .sub-menu > a {display: inline-block; width: 100%; vertical-align: middle;}
+header:hover{height: 250px; background: rgba(0, 0, 0, 0.7);}
+header:hover .sub-menu {opacity: 1; transition: all 0.3s;}
+.sub-menu:hover {color: #26A7E2;}
+header.black {background: rgba(0, 0, 0, 0.7);}
+
+/* 관리자 및 로그인 */
+.top-nav {height: 30px;  display: flex;  gap: 10px; align-items: top; font-size: 14px; text-align: center;}
+.top-btn {width: 100px; display: flex; align-items: center; justify-content: center; background: #146CEF;  border-radius: 50px;}
+
+
+/* footer */
+
+footer {width: 100%; height: 300px; padding: 30px; background: #1F1F1F;  color: #fff;  border-radius: 120px 120px 0 0;}
+footer > .f-inner {width: 1200px; height: 100%; margin: 0 auto;}
+footer h4 {margin-bottom: 10px; font-weight: 500;}
+footer h5 span {display: inline-block; vertical-align: middle; margin-left: 5px; font-size: 8px;}
+.f-inner {display: flex; justify-content: space-between;}
+.f-inner article {display: flex; width: 100%; gap: 20px; color: #ccc; line-height: 1.5;}
+.f-inner > .f-right {display: flex; flex-direction: column; justify-content: space-between; font-size: 12px;}
+.f-inner > .f-left {display: flex; flex-direction: column; justify-content: space-between;}
+.f-inner > .f-right > ul {display: flex; justify-content: space-between; gap: 10px; font-size: 16px;}
+.f-right > ul > li > a {width: 100%; display: inline-block;}
+address {display: flex; flex-direction: column; margin-bottom: 20px;}
+address > span {line-height: 1.5; color: #ccc; font-size: 14px;}
