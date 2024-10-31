@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.bankproject.bankproject.domain.board.enums.BoardType;
+import com.bankproject.bankproject.dto.CustomUserDetails;
 import com.bankproject.bankproject.entity.UserEntity;
 import com.bankproject.bankproject.global.dto.file.FileDtoConverter;
 import com.bankproject.bankproject.global.dto.file.FileDtoWrapper;
@@ -55,10 +56,16 @@ public class Board {
     private String content;
 
     @Convert(converter = FileDtoConverter.class)
-    @Column(name = "files", columnDefinition = "JSON")
+    @Column(name = "files", columnDefinition = "JSON", nullable = false)
     private FileDtoWrapper fileDTOWrapper;
 
-    @JoinColumn(name = "created_by")
+    @Column(name = "is_pin", columnDefinition = "BOOLEAN default false", nullable = false)
+    private Boolean isPin;
+
+    @Column(name = "pin_expire_date")
+    private LocalDateTime pinExpireDate;
+
+    @JoinColumn(name = "created_by", updatable = false, nullable = false)
     @ManyToOne(fetch = FetchType.LAZY) // queryDSL에서 사용하기 위해 LAZY로 설정
     private UserEntity createUser;
 
@@ -67,6 +74,7 @@ public class Board {
     private LocalDateTime createdDate;
 
     @JoinColumn(name = "updated_by")
+    @ManyToOne(fetch = FetchType.LAZY) // queryDSL에서 사용하기 위해 LAZY로 설정
     private UserEntity updateUser;
 
     @LastModifiedDate
@@ -78,12 +86,6 @@ public class Board {
 
     @Column(name = "is_used", columnDefinition = "BOOLEAN default true")
     private Boolean isUsed;
-
-    @Column(name = "is_pin", columnDefinition = "BOOLEAN default false")
-    private Boolean isPin;
-
-    @Column(name = "pin_expire_date")
-    private LocalDateTime pinExpireDate;
 
     @PrePersist
     protected void onCreate() {
@@ -114,10 +116,14 @@ public class Board {
         this.isUsed = false;
     }
 
-
     private UserEntity getCurrentUser() {
-        // Spring Security의 인증 정보를 가져옴
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserEntity) authentication.getPrincipal(); // 현재 사용자 반환
+        try {
+            // Spring Security의 인증 정보를 가져옴
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            return userDetails.getUserEntity(); // 현재 사용자 반환
+        } catch (Exception e) {
+            throw new RuntimeException("로그인 정보를 찾을 수 없습니다.");
+        }
     }
 }

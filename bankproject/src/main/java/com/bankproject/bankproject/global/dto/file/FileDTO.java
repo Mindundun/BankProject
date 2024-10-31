@@ -1,9 +1,7 @@
 package com.bankproject.bankproject.global.dto.file;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -30,14 +28,7 @@ public class FileDto {
 
     private Boolean useYn; // 사용 여부
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime regDate; // 생성일
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updatedDate; // 수정일
-
-
-    public void onUpdate(String updatedId) {
-        this.updatedDate = LocalDateTime.now();
+    public void delete() {
         this.useYn = false;
     }
 

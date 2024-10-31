@@ -76,7 +76,6 @@ public class AccountItemService {
             List<FileDto> files = accountItem.getFiles();
             for (FileDto file : files) {
                 if (deleteFileIds.contains(file.getFileId())) {
-                    file.onUpdate("admin"); // 현재 사용자 ID를 전달
                 }
             }
             accountItem = accountItem.toBuilder()
